@@ -240,7 +240,9 @@ namespace BarDelPiu.Audio
             state.generation++;
             src.clip = e.clips[0];
             src.pitch = pitch;
-            src.time = Random.Range(0f, src.clip.length * 0.9f);
+            // Empieza en un punto al azar para que dos loops iguales no suenen en fase
+            // (en WebGL el clip puede no estar cargado todavía: entonces desde el inicio)
+            if (src.clip.loadState == AudioDataLoadState.Loaded) src.time = Random.Range(0f, src.clip.length * 0.9f);
             ApplyLoop(src, state);
             src.Play();
             return new AudioLoopHandle(src, state, state.generation, this);

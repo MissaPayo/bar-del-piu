@@ -65,7 +65,8 @@ namespace BarDelPiu.Leaderboard
             if (!await EnsureReadyAsync()) return LocalScores.RankOf(score);
             try
             {
-                var meta = JsonUtility.ToJson(new Meta { name = nickname });
+                // La API exige un objeto JSON en metadata (un texto con JSON da error 400)
+                var meta = new Dictionary<string, string> { { "name", nickname } };
                 var entry = await LeaderboardsService.Instance.AddPlayerScoreAsync(LeaderboardId, score,
                     new AddPlayerScoreOptions { Metadata = meta });
                 return entry.Rank + 1;
