@@ -418,7 +418,7 @@ namespace BarDelPiu.EditorTools
             ppc.refResolutionX = 320;
             ppc.refResolutionY = 180;
             ppc.gridSnapping = PixelPerfectCamera.GridSnapping.PixelSnapping;
-            ppc.cropFrame = PixelPerfectCamera.CropFrame.None;
+            ppc.cropFrame = PixelPerfectCamera.CropFrame.StretchFill; // siempre muestra 320x180 completo, a cualquier tamaño de pantalla
             var shake = camGo.AddComponent<CameraShake>();
 
             var volGo = new GameObject("PostFX");
@@ -730,7 +730,7 @@ namespace BarDelPiu.EditorTools
             ppc.refResolutionX = 320;
             ppc.refResolutionY = 180;
             ppc.gridSnapping = PixelPerfectCamera.GridSnapping.PixelSnapping;
-            ppc.cropFrame = PixelPerfectCamera.CropFrame.None;
+            ppc.cropFrame = PixelPerfectCamera.CropFrame.StretchFill; // siempre muestra 320x180 completo, a cualquier tamaño de pantalla
             var vol = new GameObject("PostFX").AddComponent<Volume>();
             vol.isGlobal = true;
             vol.sharedProfile = profile;

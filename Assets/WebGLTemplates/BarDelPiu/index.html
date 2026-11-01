@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#1A1410">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>{{{ PRODUCT_NAME }}}</title>
+    <link rel="icon" href="TemplateData/logo.png">
+    <style>
+      :root { --ink: #1A1410; --amber: #D99B32; --amber-lt: #F2C25C; --cream: #F4EBD8; --green: #263B32; }
+      html, body {
+        margin: 0; padding: 0; width: 100%; height: 100%;
+        background: var(--ink); overflow: hidden;
+        touch-action: none; -webkit-user-select: none; user-select: none;
+        -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
+      }
+      /* El juego siempre en 16:9, lo más grande que quepa, centrado */
+      #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+      #unity-canvas { display: block; background: var(--ink); outline: none; }
+
+      #loader {
+        position: fixed; inset: 0; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 4vmin; background: var(--ink);
+        font-family: "Courier New", monospace; color: var(--cream); transition: opacity .4s;
+      }
+      #loader img { width: min(70vw, 576px); image-rendering: pixelated; }
+      #bar { width: min(60vw, 420px); height: 14px; border: 3px solid var(--amber); background: var(--green); padding: 2px; box-sizing: content-box; }
+      #fill { height: 100%; width: 0; background: var(--amber-lt); transition: width .15s; }
+      #status { font-size: clamp(12px, 2.4vmin, 18px); letter-spacing: 2px; }
+
+      #fullscreen {
+        position: fixed; right: 12px; bottom: 12px; width: 40px; height: 40px;
+        border: 2px solid var(--amber); background: rgba(26,20,16,.75); color: var(--amber-lt);
+        font: bold 20px monospace; cursor: pointer; display: none; z-index: 5;
+      }
+
+      /* Celular en vertical: pedir girar el teléfono */
+      #rotate {
+        position: fixed; inset: 0; display: none; flex-direction: column; gap: 16px;
+        align-items: center; justify-content: center; text-align: center; padding: 24px;
+        background: var(--ink); color: var(--cream); font: bold 18px "Courier New", monospace; z-index: 10;
+      }
+      #rotate .phone { width: 46px; height: 80px; border: 4px solid var(--amber-lt); border-radius: 8px; animation: turn 1.6s ease-in-out infinite; }
+      @keyframes turn { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+      @media (orientation: portrait) and (pointer: coarse) { #rotate { display: flex; } }
+
+      #error { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px; background: #8E3A30; color: var(--cream);
+               font: 14px monospace; text-align: center; display: none; z-index: 20; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <canvas id="unity-canvas" tabindex="-1"></canvas>
+    </div>
+
+    <div id="loader">
+      <img src="TemplateData/logo.png" alt="{{{ PRODUCT_NAME }}}">
+      <div id="bar"><div id="fill"></div></div>
+      <div id="status">ABRIENDO LA BARRA...</div>
+    </div>
+
+    <button id="fullscreen" title="Pantalla completa" aria-label="Pantalla completa">⛶</button>
+
+    <div id="rotate">
+      <div class="phone"></div>
+      <div>GIRA EL CELULAR<br>PARA JUGAR</div>
+    </div>
+
+    <div id="error"></div>
+
+    <script>
+      var canvas = document.querySelector("#unity-canvas");
+      var loader = document.querySelector("#loader");
+      var fill = document.querySelector("#fill");
+      var statusText = document.querySelector("#status");
+      var fullscreenBtn = document.querySelector("#fullscreen");
+      var errorBox = document.querySelector("#error");
+
+      // Ajusta el lienzo a 16:9 dentro de la ventana (Unity sigue el tamaño CSS del canvas)
+      function fit() {
+        var w = window.innerWidth, h = window.innerHeight;
+        var cw = Math.min(w, h * 16 / 9);
+        var ch = cw * 9 / 16;
+        canvas.style.width = Math.floor(cw) + "px";
+        canvas.style.height = Math.floor(ch) + "px";
+      }
+      window.addEventListener("resize", fit);
+      window.addEventListener("orientationchange", function () { setTimeout(fit, 200); });
+      fit();
+
+      // Sin menú contextual ni gestos del navegador sobre el juego
+      canvas.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+      document.addEventListener("gesturestart", function (e) { e.preventDefault(); });
+
+      function showError(msg) {
+        errorBox.textContent = msg;
+        errorBox.style.display = "block";
+      }
+
+      var config = {
+        arguments: [],
+        dataUrl: "Build/{{{ DATA_FILENAME }}}",
+        frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_THREADS
+        workerUrl: "Build/{{{ WORKER_FILENAME }}}",
+#endif
+#if USE_WASM
+        codeUrl: "Build/{{{ CODE_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+        symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
+#endif
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+        productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+        productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+        showBanner: function (msg, type) { if (type === "error") showError(msg); else console.warn(msg); },
+      };
+
+      // En celulares limitamos la resolución interna para cuidar la batería (el arte es pixel art igual)
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) config.devicePixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+
+      var script = document.createElement("script");
+      script.src = "Build/{{{ LOADER_FILENAME }}}";
+      script.onload = function () {
+        createUnityInstance(canvas, config, function (progress) {
+          fill.style.width = Math.round(progress * 100) + "%";
+          statusText.textContent = progress < 0.9 ? "SIRVIENDO... " + Math.round(progress * 100) + "%" : "¡CASI LISTO!";
+        }).then(function (unityInstance) {
+          loader.style.opacity = "0";
+          setTimeout(function () { loader.style.display = "none"; }, 400);
+          if (document.fullscreenEnabled || document.webkitFullscreenEnabled) {
+            fullscreenBtn.style.display = "block";
+            fullscreenBtn.onclick = function () { unityInstance.SetFullscreen(1); };
+          }
+          canvas.focus();
+        }).catch(function (message) {
+          showError("No se pudo cargar el juego: " + message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>
