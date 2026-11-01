@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be9aee308bef4f149b5e24c7e2a79031, type: 3}
+  m_Name: MusicLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::BarDelPiu.Audio.MusicLibrary
+  tracks:
+  - track: 1
+    main: {fileID: 8300000, guid: cb53dac0b2eeef54b9c667ba293c3427, type: 3}
+    rush: {fileID: 0}
+    loop: 1
+    volume: 0.9
+  - track: 2
+    main: {fileID: 8300000, guid: 05a98a3123929824a8421237794f19ee, type: 3}
+    rush: {fileID: 8300000, guid: c63e119f5de32ff4880b05da8ea523dc, type: 3}
+    loop: 1
+    volume: 0.8
+  - track: 3
+    main: {fileID: 8300000, guid: a96cb6e2ea319a54aa3f77e603ca279a, type: 3}
+    rush: {fileID: 0}
+    loop: 0
+    volume: 1
+  - track: 4
+    main: {fileID: 8300000, guid: c765e14950ae3b144be2ebd14211da85, type: 3}
+    rush: {fileID: 0}
+    loop: 0
+    volume: 1
+  ambience: {fileID: 8300000, guid: bf45949bac34b0d4b8b6896d01825d54, type: 3}
+  ambienceVolume: 1

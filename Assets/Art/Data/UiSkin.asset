@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9ac5d20cbd05246b439402d59ff039, type: 3}
+  m_Name: UiSkin
+  m_EditorClassIdentifier: Assembly-CSharp::BarDelPiu.UI.UiSkin
+  font: {fileID: 11400000, guid: 6a0537a7030fc3942b12784c45420a2f, type: 2}
+  unlit: {fileID: 2100000, guid: 289fec8c350129e44a5591fdc9a71d63, type: 2}
+  buttonNormal: {fileID: 21300000, guid: 7c324399901a4c04996805fcffb2bd82, type: 3}
+  buttonPressed: {fileID: 21300000, guid: 7b7ec75466dccaa4496d5a73350a52e9, type: 3}
+  panelCream: {fileID: 21300000, guid: 91d99f27ee1bc554c99833522c625e30, type: 3}
+  panelDark: {fileID: 21300000, guid: f47c72d3915a5a44bb791e10834817b0, type: 3}
+  arrowDown: {fileID: 21300000, guid: 07c2ea844a703f540ad55a21c5a275c3, type: 3}
+  soundOn: {fileID: 21300000, guid: 4dac17c47aaf74a4cb2f5fe4f4795fe9, type: 3}
+  soundOff: {fileID: 21300000, guid: 6e895cc376b8df147af799af42e3145a, type: 3}
+  pixel: {fileID: 21300000, guid: 8022e7ebd4d8d9c4d8cf9b5f6d095d6f, type: 3}
+  gear: {fileID: 21300000, guid: f284006976f6759408099fab9961543a, type: 3}
+  heart: {fileID: 21300000, guid: 0d19a821db764d745bed3d5e74b87cfe, type: 3}
+  cake: {fileID: 21300000, guid: dc8c76c8dab8a9142be69004a5852aba, type: 3}
+  candleFlame:
+  - {fileID: 21300000, guid: c080162ab930d854d802938e3fd3ee56, type: 3}
+  - {fileID: 21300000, guid: 30df0abdde0a39542927c05fdcb89608, type: 3}
+  hatRed: {fileID: 21300000, guid: ac786bf0ac603074bb6602ec2471c62b, type: 3}
+  hatMint: {fileID: 21300000, guid: e9a80b14e571a534b98640fb4517371e, type: 3}
+  confetti: {fileID: 21300000, guid: 83a4a98d3a8be4d4cb4a037ee1f99776, type: 3}

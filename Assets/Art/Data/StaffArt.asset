@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30e28361ef9c17147b22b2e06a33ba0a, type: 3}
+  m_Name: StaffArt
+  m_EditorClassIdentifier: Assembly-CSharp::BarDelPiu.Visual.StaffArt
+  pipe:
+  - {fileID: 21300000, guid: 7ec68a5eaade1d94bbf3fbb31c49fead, type: 3}
+  - {fileID: 21300000, guid: 7f3344e6785e2ef44aa8443d7aa1b137, type: 3}
+  - {fileID: 21300000, guid: ac75cb2876210cd47b62afca4a5f5113, type: 3}
+  - {fileID: 21300000, guid: 23ffb154f4654284bba14f5c59479dea, type: 3}
+  nata:
+  - {fileID: 21300000, guid: 652912215fc9c2749ae1b444d1ed7bac, type: 3}
+  - {fileID: 21300000, guid: 66b42c52e00ca4545a7d821b8594f5bd, type: 3}
+  - {fileID: 21300000, guid: 0fa5a36d8d326a64f9c3df73a5970f32, type: 3}
+  - {fileID: 21300000, guid: 3a93f1131d2326649aa97fd647a40250, type: 3}
+  pipeVoicePitch: 0.85
+  nataVoicePitch: 1.2

@@ -1,0 +1,20 @@
+# Finales de línea consistentes entre Windows y otros sistemas
+* text=auto
+
+# Archivos de Unity en texto: merge como texto, sin tocar los finales de línea de YAML
+*.unity    text eol=lf merge=unityyamlmerge
+*.prefab   text eol=lf merge=unityyamlmerge
+*.asset    text eol=lf merge=unityyamlmerge
+*.mat      text eol=lf merge=unityyamlmerge
+*.meta     text eol=lf
+*.cs       text diff=csharp
+*.shader   text
+*.json     text
+*.md       text
+*.py       text
+
+# Binarios
+*.png      binary
+*.wav      binary
+*.psd      binary
+*.ttf      binary

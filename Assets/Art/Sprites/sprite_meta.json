@@ -1,0 +1,899 @@
+{
+ "Background/bg_bar_room.png": {},
+ "Bar/counter.png": {
+  "pivot": [
+   192,
+   14
+  ]
+ },
+ "Bar/lamp.png": {
+  "pivot": [
+   7,
+   30
+  ]
+ },
+ "Bar/lamp_broken.png": {
+  "pivot": [
+   7,
+   30
+  ]
+ },
+ "Bar/neon_open_off.png": {},
+ "Bar/neon_open_on.png": {},
+ "Bar/neon_sign_off.png": {},
+ "Bar/neon_sign_on.png": {},
+ "Bar/underbar.png": {
+  "pivot": [
+   192,
+   62
+  ]
+ },
+ "Characters/Customers/customer_0_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_0_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_0_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_0_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_1_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_1_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_1_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_1_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_2_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_2_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_2_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_2_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_3_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_3_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_3_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_3_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_4_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_4_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_4_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_4_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_5_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_5_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_5_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_5_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_6_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_6_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_6_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_6_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_7_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_7_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_7_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_7_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Staff/nata_ebrio.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/nata_feliz.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/nata_neutral.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/nata_sorpresa.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/pipe_ebrio.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/pipe_feliz.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/pipe_neutral.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/pipe_sorpresa.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Exterior/bg_exterior.png": {},
+ "Exterior/car_red_0.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Exterior/car_red_1.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Exterior/car_taxi_0.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Exterior/car_taxi_1.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Exterior/car_van_0.png": {
+  "pivot": [
+   28,
+   0
+  ]
+ },
+ "Exterior/car_van_1.png": {
+  "pivot": [
+   28,
+   0
+  ]
+ },
+ "Exterior/logo_kid.png": {},
+ "FX/fx_bubble.png": {},
+ "FX/fx_coin_0.png": {},
+ "FX/fx_coin_1.png": {},
+ "FX/fx_coin_2.png": {},
+ "FX/fx_coin_3.png": {},
+ "FX/fx_drop.png": {},
+ "FX/fx_foam.png": {},
+ "FX/fx_heart.png": {},
+ "FX/fx_puff.png": {},
+ "FX/fx_sparkle_0.png": {},
+ "FX/fx_sparkle_1.png": {},
+ "FX/fx_sparkle_2.png": {},
+ "Font/glyph_0021.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0022.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0024.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0025.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0027.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0028.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0029.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_002A.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_002B.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_002C.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_002D.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_002E.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_002F.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0030.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0031.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0032.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0033.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0034.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0035.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0036.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0037.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0038.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0039.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_003A.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_003F.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0041.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0042.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0043.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0044.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0045.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0046.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0047.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0048.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0049.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_004A.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_004B.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_004C.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_004D.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_004E.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_004F.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0050.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0051.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0052.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0053.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0054.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0055.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0056.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0057.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0058.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_0059.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_005A.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00A1.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00AB.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00BB.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00BF.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00C1.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00C9.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00CD.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00D1.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00D3.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00DA.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Font/glyph_00DC.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ },
+ "Glass/glass_back.png": {
+  "pivot": [
+   8,
+   0
+  ]
+ },
+ "Glass/glass_front.png": {
+  "pivot": [
+   8,
+   0
+  ]
+ },
+ "Glass/glass_mask.png": {
+  "pivot": [
+   8,
+   0
+  ]
+ },
+ "Glass/pour_stream_0.png": {
+  "pivot": [
+   1,
+   16
+  ]
+ },
+ "Glass/pour_stream_1.png": {
+  "pivot": [
+   1,
+   16
+  ]
+ },
+ "Glass/pour_stream_2.png": {
+  "pivot": [
+   1,
+   16
+  ]
+ },
+ "Party/cake.png": {
+  "pivot": [
+   18,
+   0
+  ]
+ },
+ "Party/confetti.png": {},
+ "Party/flame_0.png": {
+  "pivot": [
+   1,
+   0
+  ]
+ },
+ "Party/flame_1.png": {
+  "pivot": [
+   1,
+   0
+  ]
+ },
+ "Party/hat_mint.png": {
+  "pivot": [
+   6,
+   0
+  ]
+ },
+ "Party/hat_red.png": {
+  "pivot": [
+   6,
+   0
+  ]
+ },
+ "Taps/handle_ambar_idle.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
+ "Taps/handle_ambar_pull.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
+ "Taps/handle_ambar_sel.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
+ "Taps/handle_negra_idle.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
+ "Taps/handle_negra_pull.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
+ "Taps/handle_negra_sel.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
+ "Taps/handle_rubia_idle.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
+ "Taps/handle_rubia_pull.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
+ "Taps/handle_rubia_sel.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
+ "Taps/tap_tower.png": {
+  "pivot": [
+   40,
+   0
+  ]
+ },
+ "UI/arrow_down.png": {
+  "pivot": [
+   5,
+   0
+  ]
+ },
+ "UI/button_normal.png": {
+  "border": [
+   5,
+   5,
+   5,
+   5
+  ]
+ },
+ "UI/button_pressed.png": {
+  "border": [
+   5,
+   5,
+   5,
+   5
+  ]
+ },
+ "UI/icon_clock.png": {},
+ "UI/icon_coin.png": {},
+ "UI/icon_error_empty.png": {},
+ "UI/icon_error_full.png": {},
+ "UI/icon_flame.png": {},
+ "UI/icon_gear.png": {},
+ "UI/icon_heart.png": {},
+ "UI/icon_sound_off.png": {},
+ "UI/icon_sound_on.png": {},
+ "UI/icon_star.png": {},
+ "UI/logo.png": {},
+ "UI/order_ambar.png": {
+  "pivot": [
+   7,
+   0
+  ]
+ },
+ "UI/order_negra.png": {
+  "pivot": [
+   7,
+   0
+  ]
+ },
+ "UI/order_rubia.png": {
+  "pivot": [
+   7,
+   0
+  ]
+ },
+ "UI/panel_cream.png": {
+  "border": [
+   5,
+   5,
+   5,
+   5
+  ]
+ },
+ "UI/panel_dark.png": {
+  "border": [
+   5,
+   5,
+   5,
+   5
+  ]
+ },
+ "UI/patience_frame.png": {
+  "pivot": [
+   10,
+   0
+  ]
+ },
+ "UI/px_white.png": {
+  "pivot": [
+   0,
+   0
+  ]
+ }
+}

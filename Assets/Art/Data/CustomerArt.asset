@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ffd443df04d24841a820f589af660ae, type: 3}
+  m_Name: CustomerArt
+  m_EditorClassIdentifier: Assembly-CSharp::BarDelPiu.Visual.CustomerArt
+  variants:
+  - neutral: {fileID: 21300000, guid: ee4fb53e04f5acc43a6ca3599be8eae0, type: 3}
+    feliz: {fileID: 21300000, guid: b6126e19bf61645429548585d632673a, type: 3}
+    impaciente: {fileID: 21300000, guid: bfbe96fcf23b2f140815625f84d83942, type: 3}
+    enojado: {fileID: 21300000, guid: ae4c77610c9a50646a0596a1b9648c59, type: 3}
+  - neutral: {fileID: 21300000, guid: 9b01b054eb0fa4545b293534335d6720, type: 3}
+    feliz: {fileID: 21300000, guid: e8a3684a0f93fc640a78d684ff03e574, type: 3}
+    impaciente: {fileID: 21300000, guid: a85cdb8fd517d3346a7df6f158d63ceb, type: 3}
+    enojado: {fileID: 21300000, guid: c5b9e427980b95346a5ecb21d98532d7, type: 3}
+  - neutral: {fileID: 21300000, guid: 61a8f137f3ca5b74c87e388f10e692c6, type: 3}
+    feliz: {fileID: 21300000, guid: 7f40f6f6376983345a3cf501ed5cde93, type: 3}
+    impaciente: {fileID: 21300000, guid: 55150b072427276498d6d806d0520d09, type: 3}
+    enojado: {fileID: 21300000, guid: dd16d72978a55194bbe1f3a4044dbe11, type: 3}
+  - neutral: {fileID: 21300000, guid: 9c7fb3add70f7b442941313c59b196a5, type: 3}
+    feliz: {fileID: 21300000, guid: 79e77244d54a66942b4a3c9b739bbba2, type: 3}
+    impaciente: {fileID: 21300000, guid: 8719521a0e1e550499e05ecb39e8a8b5, type: 3}
+    enojado: {fileID: 21300000, guid: 8c07c7d9fa708e7469d9a69cce5b98c5, type: 3}
+  - neutral: {fileID: 21300000, guid: 927de6f214b8f894eb72d6fd22ee7ae8, type: 3}
+    feliz: {fileID: 21300000, guid: c79f0a33e193c8e4ea07ac5959437d14, type: 3}
+    impaciente: {fileID: 21300000, guid: c9e8af2d84761e74db76521fabd68241, type: 3}
+    enojado: {fileID: 21300000, guid: 94359725885bbb747b5a81f6f71dc789, type: 3}
+  - neutral: {fileID: 21300000, guid: 5c174e62ccab924428332adc9ce51b32, type: 3}
+    feliz: {fileID: 21300000, guid: 3d37bfedb613f3040937c8b664de045d, type: 3}
+    impaciente: {fileID: 21300000, guid: ed7bca2e3ccfa834a9549e76c28e9888, type: 3}
+    enojado: {fileID: 21300000, guid: df3615e23e81d3244911b9d2ec5d83b1, type: 3}
+  - neutral: {fileID: 21300000, guid: dc276fdaffbba7f49adaebd77d5c331e, type: 3}
+    feliz: {fileID: 21300000, guid: 9beb81625a9e6dc4abdf6096e4155b8c, type: 3}
+    impaciente: {fileID: 21300000, guid: 84b8264776bc6034084cef9bfee2ee94, type: 3}
+    enojado: {fileID: 21300000, guid: c857f52d89293df439128553db82f313, type: 3}
+  - neutral: {fileID: 21300000, guid: 81387fe342738ef40b9e67af29c337e2, type: 3}
+    feliz: {fileID: 21300000, guid: e61c0d59c81552e4186c7df60f108364, type: 3}
+    impaciente: {fileID: 21300000, guid: 08830fe095a610c4e8c1437b2a91a65a, type: 3}
+    enojado: {fileID: 21300000, guid: 3e53bce5c157bfb45823b3c01d0d80a7, type: 3}
+  orderRubia: {fileID: 21300000, guid: 44c6b976fec568843b48c6ff57df2a0a, type: 3}
+  orderAmbar: {fileID: 21300000, guid: 8922d2b7a6d83d842b4b5298a85cf1de, type: 3}
+  orderNegra: {fileID: 21300000, guid: b1d42b4cb425762479609f462606b24a, type: 3}
+  patienceColor:
+    serializedVersion: 2
+    key0: {r: 0.7764706, g: 0.36078432, b: 0.29411766, a: 1}
+    key1: {r: 0.7764706, g: 0.36078432, b: 0.29411766, a: 1}
+    key2: {r: 0.8509804, g: 0.60784316, b: 0.19607843, a: 0}
+    key3: {r: 0.36078432, g: 0.5019608, b: 0.40784314, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 16384
+    ctime2: 29491
+    ctime3: 45875
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 1
+    m_ColorSpace: -1
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  impatientBelow: 0.6
+  angryBelow: 0.3

@@ -1,0 +1,317 @@
+{
+ "height": 10,
+ "spacing": 1,
+ "spaceWidth": 3,
+ "glyphs": [
+  {
+   "character": "A",
+   "file": "glyph_0041.png",
+   "width": 5
+  },
+  {
+   "character": "B",
+   "file": "glyph_0042.png",
+   "width": 5
+  },
+  {
+   "character": "C",
+   "file": "glyph_0043.png",
+   "width": 5
+  },
+  {
+   "character": "D",
+   "file": "glyph_0044.png",
+   "width": 5
+  },
+  {
+   "character": "E",
+   "file": "glyph_0045.png",
+   "width": 5
+  },
+  {
+   "character": "F",
+   "file": "glyph_0046.png",
+   "width": 5
+  },
+  {
+   "character": "G",
+   "file": "glyph_0047.png",
+   "width": 5
+  },
+  {
+   "character": "H",
+   "file": "glyph_0048.png",
+   "width": 5
+  },
+  {
+   "character": "I",
+   "file": "glyph_0049.png",
+   "width": 3
+  },
+  {
+   "character": "J",
+   "file": "glyph_004A.png",
+   "width": 5
+  },
+  {
+   "character": "K",
+   "file": "glyph_004B.png",
+   "width": 5
+  },
+  {
+   "character": "L",
+   "file": "glyph_004C.png",
+   "width": 5
+  },
+  {
+   "character": "M",
+   "file": "glyph_004D.png",
+   "width": 5
+  },
+  {
+   "character": "N",
+   "file": "glyph_004E.png",
+   "width": 5
+  },
+  {
+   "character": "O",
+   "file": "glyph_004F.png",
+   "width": 5
+  },
+  {
+   "character": "P",
+   "file": "glyph_0050.png",
+   "width": 5
+  },
+  {
+   "character": "Q",
+   "file": "glyph_0051.png",
+   "width": 5
+  },
+  {
+   "character": "R",
+   "file": "glyph_0052.png",
+   "width": 5
+  },
+  {
+   "character": "S",
+   "file": "glyph_0053.png",
+   "width": 5
+  },
+  {
+   "character": "T",
+   "file": "glyph_0054.png",
+   "width": 5
+  },
+  {
+   "character": "U",
+   "file": "glyph_0055.png",
+   "width": 5
+  },
+  {
+   "character": "V",
+   "file": "glyph_0056.png",
+   "width": 5
+  },
+  {
+   "character": "W",
+   "file": "glyph_0057.png",
+   "width": 5
+  },
+  {
+   "character": "X",
+   "file": "glyph_0058.png",
+   "width": 5
+  },
+  {
+   "character": "Y",
+   "file": "glyph_0059.png",
+   "width": 5
+  },
+  {
+   "character": "Z",
+   "file": "glyph_005A.png",
+   "width": 5
+  },
+  {
+   "character": "0",
+   "file": "glyph_0030.png",
+   "width": 5
+  },
+  {
+   "character": "1",
+   "file": "glyph_0031.png",
+   "width": 3
+  },
+  {
+   "character": "2",
+   "file": "glyph_0032.png",
+   "width": 5
+  },
+  {
+   "character": "3",
+   "file": "glyph_0033.png",
+   "width": 5
+  },
+  {
+   "character": "4",
+   "file": "glyph_0034.png",
+   "width": 5
+  },
+  {
+   "character": "5",
+   "file": "glyph_0035.png",
+   "width": 5
+  },
+  {
+   "character": "6",
+   "file": "glyph_0036.png",
+   "width": 5
+  },
+  {
+   "character": "7",
+   "file": "glyph_0037.png",
+   "width": 5
+  },
+  {
+   "character": "8",
+   "file": "glyph_0038.png",
+   "width": 5
+  },
+  {
+   "character": "9",
+   "file": "glyph_0039.png",
+   "width": 5
+  },
+  {
+   "character": "!",
+   "file": "glyph_0021.png",
+   "width": 1
+  },
+  {
+   "character": "¡",
+   "file": "glyph_00A1.png",
+   "width": 1
+  },
+  {
+   "character": "?",
+   "file": "glyph_003F.png",
+   "width": 5
+  },
+  {
+   "character": "¿",
+   "file": "glyph_00BF.png",
+   "width": 5
+  },
+  {
+   "character": ".",
+   "file": "glyph_002E.png",
+   "width": 1
+  },
+  {
+   "character": ":",
+   "file": "glyph_003A.png",
+   "width": 1
+  },
+  {
+   "character": "-",
+   "file": "glyph_002D.png",
+   "width": 3
+  },
+  {
+   "character": "+",
+   "file": "glyph_002B.png",
+   "width": 5
+  },
+  {
+   "character": "%",
+   "file": "glyph_0025.png",
+   "width": 5
+  },
+  {
+   "character": "$",
+   "file": "glyph_0024.png",
+   "width": 5
+  },
+  {
+   "character": "'",
+   "file": "glyph_0027.png",
+   "width": 1
+  },
+  {
+   "character": "\"",
+   "file": "glyph_0022.png",
+   "width": 3
+  },
+  {
+   "character": "(",
+   "file": "glyph_0028.png",
+   "width": 2
+  },
+  {
+   "character": ")",
+   "file": "glyph_0029.png",
+   "width": 2
+  },
+  {
+   "character": "/",
+   "file": "glyph_002F.png",
+   "width": 5
+  },
+  {
+   "character": "«",
+   "file": "glyph_00AB.png",
+   "width": 5
+  },
+  {
+   "character": "»",
+   "file": "glyph_00BB.png",
+   "width": 5
+  },
+  {
+   "character": "*",
+   "file": "glyph_002A.png",
+   "width": 5
+  },
+  {
+   "character": "Á",
+   "file": "glyph_00C1.png",
+   "width": 5
+  },
+  {
+   "character": "É",
+   "file": "glyph_00C9.png",
+   "width": 5
+  },
+  {
+   "character": "Í",
+   "file": "glyph_00CD.png",
+   "width": 3
+  },
+  {
+   "character": "Ó",
+   "file": "glyph_00D3.png",
+   "width": 5
+  },
+  {
+   "character": "Ú",
+   "file": "glyph_00DA.png",
+   "width": 5
+  },
+  {
+   "character": "Ü",
+   "file": "glyph_00DC.png",
+   "width": 5
+  },
+  {
+   "character": "Ñ",
+   "file": "glyph_00D1.png",
+   "width": 5
+  },
+  {
+   "character": ",",
+   "file": "glyph_002C.png",
+   "width": 2
+  }
+ ]
+}
