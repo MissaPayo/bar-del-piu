@@ -1,0 +1,18 @@
+{
+    "name": "BarDelPiu.Services.Editor",
+    "rootNamespace": "BarDelPiu.EditorTools",
+    "references": [
+        "Unity.Services.DeploymentApi"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
