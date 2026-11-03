@@ -34,14 +34,27 @@ namespace BarDelPiu.Visual
         }
 
         public List<Variant> variants = new List<Variant>();
+        [Tooltip("Clientes del modo Hardcore: punks y metaleros.")]
+        public List<Variant> hardcoreVariants = new List<Variant>();
         public Sprite orderRubia;
         public Sprite orderAmbar;
         public Sprite orderNegra;
+        [Header("Pedido resaltado (cliente que espera)")]
+        public Sprite orderRubiaHint;
+        public Sprite orderAmbarHint;
+        public Sprite orderNegraHint;
 
         [Header("Paciencia")]
         public Gradient patienceColor;
         [Range(0f, 1f)] public float impatientBelow = 0.6f;
         [Range(0f, 1f)] public float angryBelow = 0.3f;
+
+        public Sprite OrderHint(BeerKind k) => k switch
+        {
+            BeerKind.Rubia => orderRubiaHint,
+            BeerKind.Ambar => orderAmbarHint,
+            _ => orderNegraHint,
+        };
 
         public Sprite Order(BeerKind k) => k switch
         {

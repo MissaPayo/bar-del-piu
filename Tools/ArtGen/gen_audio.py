@@ -739,6 +739,118 @@ def mischief():
     write("SFX/lamp_flicker.wav", fade_edges(x), 0.45)
 
 
+def heavy():
+    """Modo Hardcore: riff pesado (guitarra distorsionada sintetizada), doble bombo, aviso de tiempo y golpe de inicio."""
+    def guitar(f, k, drive=7.0):
+        # dos sierras desafinadas + quinta, saturadas y filtradas: «power chord» distorsionado
+        x = saw(f, k) + saw(f * 1.006, k) + 0.7 * saw(f * 1.5, k) + 0.5 * saw(f * 2.0, k)
+        x = np.tanh(drive * x / 3.0)
+        return onepole_lp(x, 2600)
+
+    bpm = 168
+    beat = 60 / bpm
+    bars = 16
+    N = int(bars * 4 * beat * SR)
+    tail = SR
+    buf = np.zeros(N + tail)
+    drums = np.zeros(N + tail)
+    # Riff en Mi (E2): palm mute en corcheas con acentos
+    riff = [("E2", 1, True), ("E2", 1, True), ("G2", 1, False), ("E2", 1, True),
+            ("A2", 1, False), ("E2", 1, True), ("Bb2", 1, False), ("A2", 1, False)]
+    for b in range(bars):
+        shift = 0 if b % 4 < 2 else (5 if b % 4 == 2 else 3)  # E, E, A, G
+        for e, (nm, ln, mute) in enumerate(riff):
+            f = hz(nm) * 2 ** (shift / 12)
+            k = int(beat * 0.5 * ln * SR * (0.55 if mute else 0.95))
+            g = guitar(f, k) * env(k, 0.002, 0.08 if mute else 0.25, 0.5 if not mute else 0.2, 0.02)
+            place(buf, g * (0.75 if mute else 1.0), b * 4 * beat + e * beat / 2)
+        # doble bombo en semicorcheas, caja en 2 y 4, platillo en cada negra
+        for s16 in range(16):
+            place(drums, drum_kick(int(0.12 * SR)) * 0.8, b * 4 * beat + s16 * beat / 4)
+        for q in (1, 3):
+            place(drums, drum_snare(int(0.25 * SR)) * 1.1, b * 4 * beat + q * beat)
+        for q in range(4):
+            k = int(0.25 * SR)
+            ride = fft_filter(noise(k), lo=5000) * exp_decay(k, 0.09) * 0.35
+            place(drums, ride, b * 4 * beat + q * beat)
+        if b % 4 == 0:  # golpe de platillo al empezar cada frase
+            k = int(1.2 * SR)
+            place(drums, fft_filter(noise(k), lo=3000) * exp_decay(k, 0.5) * 0.6, b * 4 * beat)
+    y = buf[:N].copy()
+    y[:tail] += buf[N:N + tail]
+    d = drums[:N].copy()
+    d[:tail] += drums[N:N + tail]
+    l = y * 0.85 + d * 0.8
+    r = np.roll(y, 220) * 0.85 + d * 0.8  # leve ensanche estéreo
+    st = np.stack([l, r], axis=1)
+    write("Music/music_hardcore.wav", st, 0.85, stereo=True)
+
+    # Golpe de aviso del modo Hardcore: acorde distorsionado + platillo + caída
+    d = 1.8
+    k = n_(d)
+    hit = guitar(hz("E2"), k, drive=10) * exp_decay(k, 0.6)
+    hit += drum_kick(k) * 1.2
+    hit += fft_filter(noise(k), lo=2500) * exp_decay(k, 0.7) * 0.5
+    hit += sine(np.linspace(110, 40, k), k) * exp_decay(k, 0.4) * 0.6
+    write("SFX/hardcore_sting.wav", fade_edges(hit), 0.9)
+
+    # Aviso de tiempo (60/30/10 s): tres campanadas ascendentes, claras sobre la música
+    d = 0.9
+    buf2 = np.zeros(n_(d))
+    for i, nm in enumerate(("E5", "G#5", "B5")):
+        place(buf2, bell(hz(nm), 0.6, ratios=(1, 2, 3.01), amps=(1, .35, .15), tau=0.25), i * 0.12)
+    write("SFX/time_warning.wav", fade_edges(buf2), 0.75)
+
+
+def birthday_metal():
+    """Cumpleaños en modo Hardcore: la misma melodía tradicional con guitarras distorsionadas y doble bombo."""
+    def guitar(f, k, drive=7.0):
+        x = saw(f, k) + saw(f * 1.006, k) + 0.7 * saw(f * 1.5, k) + 0.5 * saw(f * 2.0, k)
+        return onepole_lp(np.tanh(drive * x / 3.0), 2600)
+
+    def lead(f, k):
+        x = np.tanh(5 * (saw(f, k) + 0.4 * saw(f * 2.005, k)))
+        t = np.arange(k) / SR
+        x *= 1 + 0.004 * np.sin(2 * np.pi * 6 * t)
+        return onepole_lp(x, 3400)
+
+    bpm = 150
+    beat = 60 / bpm
+    mel = [("C4", .75), ("C4", .25), ("D4", 1), ("C4", 1), ("F4", 1), ("E4", 2),
+           ("C4", .75), ("C4", .25), ("D4", 1), ("C4", 1), ("G4", 1), ("F4", 2),
+           ("C4", .75), ("C4", .25), ("C5", 1), ("A4", 1), ("F4", 1), ("E4", 1), ("D4", 2),
+           ("Bb4", .75), ("Bb4", .25), ("A4", 1), ("F4", 1), ("G4", 1), ("F4", 3)]
+    chords = [(0, "F2"), (1, "F2"), (4, "C2"), (7, "C2"), (10, "F2"), (13, "F2"), (16, "Bb1"), (19, "C2"), (22, "F2")]
+    total = sum(d for _, d in mel) + 2
+    N = int(total * beat * SR)
+    buf = np.zeros(N + SR)
+    t = 0.0
+    for nm, d in mel:
+        k = int(d * beat * SR)
+        place(buf, lead(hz(nm) * 2, k) * env(k, 0.005, 0.2, 0.7, 0.05) * 0.5, t * beat)
+        t += d
+    for i, (at, root) in enumerate(chords):
+        end = chords[i + 1][0] if i + 1 < len(chords) else total - 2
+        e = at
+        while e < end - 0.01:  # power chords en corcheas, con palm mute
+            k = int(beat * 0.45 * SR)
+            place(buf, guitar(hz(root), k) * env(k, 0.002, 0.08, 0.3, 0.02) * 0.45, (e + 0.75) * beat)
+            e += 0.5
+    for q in range(int(total * 4)):  # doble bombo en semicorcheas, caja en 2 y 3 de cada compás de 3/4
+        place(buf, drum_kick(int(0.1 * SR)) * 0.5, q * beat / 4)
+    for b in range(int(total)):
+        if b % 3 == 1:
+            place(buf, drum_snare(int(0.25 * SR)) * 0.8, b * beat)
+        if b % 3 == 0:
+            k = int(0.9 * SR)
+            place(buf, fft_filter(noise(k), lo=3000) * exp_decay(k, 0.4) * 0.35, b * beat)
+    # golpe final con platillo
+    k = int(1.5 * SR)
+    place(buf, guitar(hz("F2"), k, 9) * exp_decay(k, 0.6) * 0.6 + fft_filter(noise(k), lo=2500) * exp_decay(k, 0.6) * 0.4,
+          (total - 2) * beat)
+    write("Music/music_birthday_metal.wav", fade_edges(buf[:N + SR // 2]), 0.85)
+
+
 def n_(d):
     return int(d * SR)
 
@@ -750,3 +862,5 @@ if __name__ == "__main__":
     print("Cumpleaños"); birthday()
     car_pass()
     mischief()
+    heavy()
+    birthday_metal()

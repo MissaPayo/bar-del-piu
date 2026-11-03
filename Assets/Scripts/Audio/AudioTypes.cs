@@ -47,6 +47,8 @@ namespace BarDelPiu.Audio
         Gulp,
         GlassBreak,
         LampFlicker,
+        HardcoreSting,
+        TimeWarning,
     }
 
     public enum MusicTrack
@@ -56,6 +58,8 @@ namespace BarDelPiu.Audio
         Game,
         Results,
         Birthday,
+        Hardcore,
+        BirthdayMetal,
     }
 
     public enum AudioBus

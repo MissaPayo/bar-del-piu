@@ -45,9 +45,37 @@ MonoBehaviour:
     feliz: {fileID: 21300000, guid: e61c0d59c81552e4186c7df60f108364, type: 3}
     impaciente: {fileID: 21300000, guid: 08830fe095a610c4e8c1437b2a91a65a, type: 3}
     enojado: {fileID: 21300000, guid: 3e53bce5c157bfb45823b3c01d0d80a7, type: 3}
+  hardcoreVariants:
+  - neutral: {fileID: 21300000, guid: d257853df870d7741a7a2187181e8ce7, type: 3}
+    feliz: {fileID: 21300000, guid: aae92af7b593d094da497d2bffd65fe7, type: 3}
+    impaciente: {fileID: 21300000, guid: f317305ba6e8f444eb5b5a3ee556ca26, type: 3}
+    enojado: {fileID: 21300000, guid: 00853e531937a334b98c6591a224d2dc, type: 3}
+  - neutral: {fileID: 21300000, guid: 86fc677f07c00274296b7db166912a4f, type: 3}
+    feliz: {fileID: 21300000, guid: e09c326a49b2bf447a2e6375e7c37739, type: 3}
+    impaciente: {fileID: 21300000, guid: f583c23d672d43745ab335db57ee979f, type: 3}
+    enojado: {fileID: 21300000, guid: 1663f64ac081aae469a43c8f9be140c1, type: 3}
+  - neutral: {fileID: 21300000, guid: 4aacfe9cd8d9e2b438afbb84cd81a008, type: 3}
+    feliz: {fileID: 21300000, guid: 7b265ecef5967a74f889850229dfd88a, type: 3}
+    impaciente: {fileID: 21300000, guid: 1c5fde0cdb6b90c42aae519fd2b45137, type: 3}
+    enojado: {fileID: 21300000, guid: 39ae0d46bad9f4f4d8f009df029ef262, type: 3}
+  - neutral: {fileID: 21300000, guid: dc04edf3f0e34a445a66e23e90c401ee, type: 3}
+    feliz: {fileID: 21300000, guid: f69572f2d4683744c8842295618849f4, type: 3}
+    impaciente: {fileID: 21300000, guid: 9aaf655f51cf56542ba293c4f6d860d6, type: 3}
+    enojado: {fileID: 21300000, guid: 0b93038e8135a314fa9898f28b70acdd, type: 3}
+  - neutral: {fileID: 21300000, guid: 3ee86ae8405ece24e881cd6b98db6316, type: 3}
+    feliz: {fileID: 21300000, guid: 4c9e301ae28e91744921c38ca283bd8c, type: 3}
+    impaciente: {fileID: 21300000, guid: 508ab625a1251234884056893f3c3f80, type: 3}
+    enojado: {fileID: 21300000, guid: 03f3a39d1b79dba4aa3261a150114d44, type: 3}
+  - neutral: {fileID: 21300000, guid: d5776dd175f71dd4aa1a47c4d9c1558a, type: 3}
+    feliz: {fileID: 21300000, guid: 1456058ccaf42a3408b5a5de0f5f1d96, type: 3}
+    impaciente: {fileID: 21300000, guid: fa6c2729823450544bdab0ccaf18c9ee, type: 3}
+    enojado: {fileID: 21300000, guid: 97b7b5fa5b4f1714984f7e9d61a3ef31, type: 3}
   orderRubia: {fileID: 21300000, guid: 44c6b976fec568843b48c6ff57df2a0a, type: 3}
   orderAmbar: {fileID: 21300000, guid: 8922d2b7a6d83d842b4b5298a85cf1de, type: 3}
   orderNegra: {fileID: 21300000, guid: b1d42b4cb425762479609f462606b24a, type: 3}
+  orderRubiaHint: {fileID: 21300000, guid: 2a93a81d7c6a68f4583a15695d3fc6fa, type: 3}
+  orderAmbarHint: {fileID: 21300000, guid: ea9791410b209224cacd753484798427, type: 3}
+  orderNegraHint: {fileID: 21300000, guid: ce61fad18a9d06144b2ab22b24d3569e, type: 3}
   patienceColor:
     serializedVersion: 2
     key0: {r: 0.7764706, g: 0.36078432, b: 0.29411766, a: 1}

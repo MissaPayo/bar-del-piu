@@ -98,8 +98,10 @@ namespace BarDelPiu.Screens
             yield return _bar.PopUp(Speaker.Nata, StaffExpression.Sorpresa);
 
             // ¡Sorpresa!
-            AudioManager.Play(Sfx.PartyHorn);
-            AudioManager.PlayMusic(MusicTrack.Birthday);
+            bool hardcore = Core.BarMischief.AnyLampBroken;
+            AudioManager.Play(hardcore ? Sfx.HardcoreSting : Sfx.PartyHorn);
+            AudioManager.PlayMusic(hardcore ? MusicTrack.BirthdayMetal : MusicTrack.Birthday);
+            if (hardcore) StartCoroutine(FillTheBar()); // en Hardcore: el bar se llena de punks que cabecean
             _confetti = FxBuilder.Build(FxKind.Confetti, new[] { _skin.confetti }, _skin.unlit);
             _confetti.transform.SetParent(transform, false);
             _spawned.Add(_confetti.gameObject);
@@ -163,9 +165,34 @@ namespace BarDelPiu.Screens
             _spawned.Add(back.gameObject);
         }
 
+        /// <summary>Público punk/metalero que llena la barra y cabecea durante la canción.</summary>
+        IEnumerator FillTheBar()
+        {
+            for (int i = 0; i < _bar.customers.Length; i++)
+            {
+                var c = _bar.customers[i];
+                c.Setup(UnityEngine.Random.Range(0, 6), BeerKind.Negra, true);
+                c.SetMood(Mood.Feliz);
+                c.headbang = true;
+                c.PlayArrive(false);
+                yield return new WaitForSeconds(0.18f);
+            }
+        }
+
+        void ClearCrowd()
+        {
+            foreach (var c in _bar.customers)
+            {
+                if (!c) continue;
+                c.headbang = false;
+                c.HideBehindCounter();
+            }
+        }
+
         void Finish()
         {
             StopAllCoroutines();
+            ClearCrowd();
             foreach (var go in _spawned)
                 if (go) Destroy(go);
             _spawned.Clear();

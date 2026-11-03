@@ -33,5 +33,15 @@ MonoBehaviour:
     rush: {fileID: 0}
     loop: 0
     volume: 1
+  - track: 5
+    main: {fileID: 8300000, guid: 105f9b18aa66a114aaf2812c4974d44f, type: 3}
+    rush: {fileID: 0}
+    loop: 1
+    volume: 0.85
+  - track: 6
+    main: {fileID: 8300000, guid: 96c83b3c19607fb4a936e3e42bf1c891, type: 3}
+    rush: {fileID: 0}
+    loop: 0
+    volume: 1
   ambience: {fileID: 8300000, guid: bf45949bac34b0d4b8b6896d01825d54, type: 3}
   ambienceVolume: 1

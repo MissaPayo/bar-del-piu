@@ -51,16 +51,50 @@ namespace BarDelPiu.Screens
             "UNA MÁS Y NO RESPONDO... *HIP*",
         };
 
+        static readonly string[] PipeLinesHardcore =
+        {
+            "¡SALUD, METALERO! ESTA SABE A DISTORSIÓN.",
+            "ESPUMA NEGRA COMO MI CHAQUETA. ¡ME GUSTA!",
+            "¡SUBE EL VOLUMEN QUE NO ESCUCHO LA ESPUMA!",
+            "UF... YA VEO TRES LLAVES Y UNA GUITARRA.",
+            "¿ESTA ERA LA QUINTA O EL QUINTO SOLO?",
+            "¡NATA, HAGAMOS POGO DETRÁS DE LA BARRA!",
+            "TE QUIERO, HERMANO DE RUIDO. *HIP*",
+            "YO... SOY EL REY DEL MOSH. *HIP*",
+            "NO VEO LAS LLAVES... TODO ESTÁ A OSCURAS.",
+            "UNA MÁS Y ME TIRO DEL ESCENARIO... *HIP*",
+        };
+
+        static readonly string[] NataLinesHardcore =
+        {
+            "¡GRACIAS! ¡ESTO ES MÁS PUNK QUE MI CRESTA!",
+            "MMM, AMARGA COMO UNA BALADA METALERA.",
+            "OJO QUE ANOTO TODO... CON SPRAY.",
+            "¿CUÁNTAS VAN? PERDÍ LA CUENTA EN EL POGO.",
+            "¡LOS PEDIDOS SUENAN A RIFF DE GUITARRA!",
+            "¡ESTA RONDA LA PAGA PIPE! ¡OI! ¡OI! ¡OI!",
+            "¡TODOS LOS PUNKS SON MIS AMIGOS!",
+            "ME DUELE EL CUELLO DE TANTO CABECEAR. *HIP*",
+            "¿QUIÉN PUSO DOS ESCENARIOS? *HIP*",
+            "UNA MÁS Y ME LANZO AL PÚBLICO... *HIP*",
+        };
+
+        static bool Hardcore => BarMischief.AnyLampBroken;
+
         int _selected;
         bool _pouring;
         float _liquid, _foam;
         readonly int[] _lampTaps = new int[BarMischief.LampCount];
+        readonly float[] _lastLampTap = new float[BarMischief.LampCount];
         BoxCollider2D _pipeHit, _nataHit;
         BoxCollider2D[] _lampHits;
         bool _busy;
         float _nextHiccup;
 
         public bool Interactive { get; set; } = true;
+
+        /// <summary>Se rompió la primera ampolleta: el menú se pone en modo Hardcore.</summary>
+        public event System.Action HardcoreActivated;
 
         void Start()
         {
@@ -90,16 +124,14 @@ namespace BarDelPiu.Screens
         /// <summary>Ampolletas rotas en partidas anteriores siguen rotas hasta jugar.</summary>
         public void ApplyLampState()
         {
-            int broken = 0;
             for (int i = 0; i < bar.lamps.Length && i < BarMischief.LampCount; i++)
             {
                 if (!BarMischief.IsLampBroken(i)) continue;
-                broken++;
                 bar.lamps[i].sprite = lampBroken;
                 bar.lamps[i].color = Color.white;
                 if (i < bar.lampLights.Length && bar.lampLights[i]) bar.lampLights[i].intensity = 0f;
             }
-            if (bar.globalLight) bar.globalLight.intensity = bar.globalOn - 0.18f * broken;
+            bar.RefreshAmbient();
         }
 
         /// <summary>Expresión según cuántas lleva encima.</summary>
@@ -217,8 +249,9 @@ namespace BarDelPiu.Screens
                 PixelTween.Punch(this, sr.transform, 0.2f, 0.2f);
                 AudioManager.Play(Sfx.UiBack);
                 bar.dialogue.Say(who, StaffExpression.Sorpresa, who == Speaker.Pipe
-                    ? "NO, NO. ALGUIEN TIENE QUE ATENDER ESTE BAR."
-                    : "¡NI HABLAR! CON PIPE ASÍ, ALGUIEN TIENE QUE TRABAJAR.", 2.8f);
+                    ? (Hardcore ? "NO, NO. ALGUIEN TIENE QUE CUIDAR EL ESCENARIO." : "NO, NO. ALGUIEN TIENE QUE ATENDER ESTE BAR.")
+                    : (Hardcore ? "¡NI HABLAR! CON PIPE ASÍ, ALGUIEN TIENE QUE PONER LA MÚSICA."
+                                : "¡NI HABLAR! CON PIPE ASÍ, ALGUIEN TIENE QUE TRABAJAR."), 2.8f);
                 yield return new WaitForSeconds(0.8f);
                 bar.SetExpression(who, MoodFor(who));
                 _busy = false;
@@ -244,7 +277,9 @@ namespace BarDelPiu.Screens
             }
             var mood = MoodFor(who);
             bar.SetExpression(who, mood);
-            var lines = who == Speaker.Pipe ? PipeLines : NataLines;
+            var lines = Hardcore
+                ? (who == Speaker.Pipe ? PipeLinesHardcore : NataLinesHardcore)
+                : (who == Speaker.Pipe ? PipeLines : NataLines);
             bar.dialogue.Say(who, mood, lines[Mathf.Clamp(n - 1, 0, lines.Length - 1)], 2.6f);
             if (mood == StaffExpression.Ebrio) AudioManager.Play(Sfx.Hiccup, 1f, who == Speaker.Pipe ? 0.85f : 1.1f);
             yield return new WaitForSeconds(0.5f);
@@ -256,8 +291,9 @@ namespace BarDelPiu.Screens
             var sr = who == Speaker.Pipe ? bar.pipe : bar.nata;
             bar.SetExpression(who, StaffExpression.Ebrio);
             bar.dialogue.Say(who, StaffExpression.Ebrio, who == Speaker.Pipe
-                ? "ZZZ... NATA, TE TOCA SERVIR A TI... *HIP*"
-                : "ME VOY A ACOSTAR... PIPE, CUBRE LA BARRA. *HIP*", 0f);
+                ? (Hardcore ? "ME VOY AL CAMARÍN... NATA, TOCA TÚ EL ÚLTIMO TEMA. *HIP*" : "ZZZ... NATA, TE TOCA SERVIR A TI... *HIP*")
+                : (Hardcore ? "ME VOY A DORMIR EN EL AMPLIFICADOR... PIPE, CUBRE LA BARRA. *HIP*"
+                            : "ME VOY A ACOSTAR... PIPE, CUBRE LA BARRA. *HIP*"), 0f);
             for (int i = 0; i < 4; i++)
             {
                 AudioManager.Play(Sfx.Hiccup, 1f, (who == Speaker.Pipe ? 0.85f : 1.1f) + i * 0.03f);
@@ -290,34 +326,31 @@ namespace BarDelPiu.Screens
 
         // ------------------------------------------------------------------ ampolletas
 
+        /// <summary>
+        /// Cada toque prende o apaga la ampolleta (textura y luz juntas). Muchos toques seguidos la rompen.
+        /// </summary>
         void TapLamp(int i)
         {
             if (i >= BarMischief.LampCount || BarMischief.IsLampBroken(i)) return;
-            _lampTaps[i]++;
+            _lampTaps[i] = Time.time - _lastLampTap[i] < 0.9f ? _lampTaps[i] + 1 : 1;
+            _lastLampTap[i] = Time.time;
             if (_lampTaps[i] >= tapsToBreakLamp)
             {
                 BreakLamp(i);
                 return;
             }
-            AudioManager.Play(Sfx.LampFlicker, 1f, 1f + _lampTaps[i] * 0.05f);
-            StartCoroutine(FlickerLamp(i, 2 + _lampTaps[i]));
-        }
-
-        IEnumerator FlickerLamp(int i, int blinks)
-        {
-            for (int b = 0; b < blinks; b++)
-            {
-                bar.SetLamp(i, false);
-                yield return new WaitForSeconds(0.04f + Random.value * 0.05f);
-                if (BarMischief.IsLampBroken(i)) yield break;
-                bar.SetLamp(i, true);
-                yield return new WaitForSeconds(0.05f + Random.value * 0.06f);
-            }
+            bool on = !bar.IsLampOn(i);
+            bar.SetLamp(i, on);
+            bar.RefreshAmbient();
+            AudioManager.Play(on ? Sfx.LightOn : Sfx.LampFlicker, 0.8f, 1f + _lampTaps[i] * 0.05f);
+            PixelTween.Punch(this, bar.lamps[i].transform, 0.12f, 0.15f);
         }
 
         void BreakLamp(int i)
         {
+            bool first = !BarMischief.AnyLampBroken;
             BarMischief.BreakLamp(i);
+            if (first) HardcoreActivated?.Invoke();
             AudioManager.Play(Sfx.GlassBreak);
             AudioManager.Duck(0.5f, 0.8f);
             var bulb = bar.lamps[i].transform.position + Vector3.down * 1.7f;

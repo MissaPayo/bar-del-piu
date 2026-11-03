@@ -28,6 +28,31 @@ namespace BarDelPiu.Screens
         public SpriteRenderer nata;
         [Tooltip("Ampolleta rota (travesura del menú; se repara al jugar una partida).")]
         public Sprite lampBroken;
+        [Tooltip("Textura de la ampolleta encendida y apagada: siempre coincide con su luz.")]
+        public Sprite lampSpriteOn;
+        public Sprite lampSpriteOff;
+
+        bool[] _lampIsOn;
+
+        [Header("Modo Hardcore: bar punk")]
+        [Tooltip("Carteles de bandas y grafitis sobre la pared.")]
+        public SpriteRenderer hardcoreDecor;
+        public Sprite neonHardcoreOn;
+        public Sprite neonHardcoreOff;
+        [Tooltip("Accesorios punk sobre los retratos de Pipe y Nata.")]
+        public SpriteRenderer pipePunk;
+        public SpriteRenderer nataPunk;
+        public Color hardcoreAmbient = new Color(1f, 0.55f, 0.62f);
+        public Color hardcoreLamp = new Color(1f, 0.35f, 0.55f);
+        public Color hardcoreNeon = new Color(1f, 0.18f, 0.24f);
+
+        Color _ambientColor;
+        Color[] _lampColors;
+        Sprite _neonOn, _neonOff;
+        Color _neonColor;
+        bool _hardcoreLook;
+
+        public bool HardcoreLook => _hardcoreLook;
 
         [HideInInspector] public bool pipeTipsy, nataTipsy;
 
@@ -44,6 +69,47 @@ namespace BarDelPiu.Screens
         {
             if (pipe) _pipeHome = pipe.transform.localPosition;
             if (nata) _nataHome = nata.transform.localPosition;
+            if (globalLight) _ambientColor = globalLight.color;
+            _lampColors = new Color[lampLights.Length];
+            for (int i = 0; i < lampLights.Length; i++)
+                if (lampLights[i]) _lampColors[i] = lampLights[i].color;
+            if (neon)
+            {
+                _neonOn = neon.on;
+                _neonOff = neon.off;
+                if (neon.glow) _neonColor = neon.glow.color;
+            }
+            if (hardcoreDecor) hardcoreDecor.enabled = false;
+            if (pipePunk) pipePunk.enabled = false;
+            if (nataPunk) nataPunk.enabled = false;
+            StaffArt.Hardcore = false; // cada escena decide (menú y partida lo activan en Hardcore)
+        }
+
+        /// <summary>
+        /// Bar en versión punk (modo Hardcore): carteles y grafitis, letrero HARDCORE en neón rojo,
+        /// luz roja/morada y Pipe y Nata con accesorios punk. false vuelve al bar de siempre.
+        /// </summary>
+        public void SetHardcoreLook(bool on)
+        {
+            _hardcoreLook = on;
+            if (hardcoreDecor) hardcoreDecor.enabled = on;
+            // Pipe y Nata cambian a sus retratos punk/metaleros completos
+            StaffArt.Hardcore = on;
+            if (staff)
+            {
+                if (pipe) pipe.sprite = staff.Get(Speaker.Pipe, StaffExpression.Feliz);
+                if (nata) nata.sprite = staff.Get(Speaker.Nata, StaffExpression.Feliz);
+            }
+            if (globalLight) globalLight.color = on ? hardcoreAmbient : _ambientColor;
+            for (int i = 0; i < lampLights.Length; i++)
+                if (lampLights[i]) lampLights[i].color = on ? hardcoreLamp : _lampColors[i];
+            if (neon && neonHardcoreOn)
+            {
+                neon.on = on ? neonHardcoreOn : _neonOn;
+                neon.off = on ? neonHardcoreOff : _neonOff;
+                neon.sign.sprite = neon.on;
+                if (neon.glow) neon.glow.color = on ? hardcoreNeon : _neonColor;
+            }
         }
 
         // ------------------------------------------------------------------ luces
@@ -58,8 +124,8 @@ namespace BarDelPiu.Screens
 
         public void LightsOnInstant()
         {
-            if (globalLight) globalLight.intensity = globalOn - 0.18f * BrokenLamps();
             for (int i = 0; i < lampLights.Length; i++) SetLamp(i, true);
+            RefreshAmbient();
             SetNeon(neon, true, neonLightOn);
             SetNeon(openSign, true, openLightOn);
         }
@@ -81,8 +147,27 @@ namespace BarDelPiu.Screens
                 if (lamps[i]) lamps[i].color = Color.white;
                 return;
             }
+            if (_lampIsOn == null || _lampIsOn.Length != lampLights.Length) _lampIsOn = new bool[lampLights.Length];
+            if (i < _lampIsOn.Length) _lampIsOn[i] = on;
             if (i < lampLights.Length && lampLights[i]) lampLights[i].intensity = on ? lampOn : 0f;
-            if (i < lamps.Length && lamps[i]) lamps[i].color = on ? Color.white : new Color(0.18f, 0.15f, 0.15f);
+            if (i < lamps.Length && lamps[i])
+            {
+                // La textura acompaña a la luz: ampolleta prendida o apagada
+                if (lampSpriteOn && lampSpriteOff) lamps[i].sprite = on ? lampSpriteOn : lampSpriteOff;
+                lamps[i].color = on || lampSpriteOff ? Color.white : new Color(0.18f, 0.15f, 0.15f);
+            }
+        }
+
+        public bool IsLampOn(int i) => _lampIsOn != null && i < _lampIsOn.Length && _lampIsOn[i];
+
+        /// <summary>Luz ambiente según cuántas ampolletas hay rotas o apagadas.</summary>
+        public void RefreshAmbient()
+        {
+            if (!globalLight) return;
+            int off = 0;
+            for (int i = 0; i < lamps.Length; i++)
+                if (!IsLampOn(i)) off++;
+            globalLight.intensity = Mathf.Max(0.2f, globalOn - 0.16f * off);
         }
 
         static void SetNeon(NeonFlicker n, bool on, float lightOn)

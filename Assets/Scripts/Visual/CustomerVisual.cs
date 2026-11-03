@@ -21,6 +21,10 @@ namespace BarDelPiu.Visual
         public int hideDepthPx = 56;
 
         int _variant;
+        bool _hardcore;
+        BeerKind _order;
+        int _hint; // 0 = nada, 1 = espera hace rato, 2 = el más urgente
+        float _hintPulse;
         float _patience = 1f;
         Mood _mood = Mood.Neutral;
         bool _served, _leaving, _warned, _uiVisible;
@@ -35,20 +39,45 @@ namespace BarDelPiu.Visual
             if (body) _bodyHome = body.transform.localPosition;
         }
 
-        public void Setup(int variant, BeerKind order)
+        public void Setup(int variant, BeerKind order, bool hardcore = false)
         {
-            _variant = art && art.variants.Count > 0 ? Mathf.Abs(variant) % art.variants.Count : 0;
+            _hardcore = hardcore && art && art.hardcoreVariants.Count > 0; // punks y metaleros
+            var list = Variants;
+            _variant = list != null && list.Count > 0 ? Mathf.Abs(variant) % list.Count : 0;
             _served = _leaving = _warned = false;
             _patience = 1f;
+            _order = order;
+            _hint = 0;
             if (orderBubble && art) orderBubble.sprite = art.Order(order);
             SetUiVisible(false);
             SetMood(Mood.Neutral);
             SetPatience(1f);
         }
 
+        System.Collections.Generic.List<CustomerArt.Variant> Variants => !art ? null : _hardcore ? art.hardcoreVariants : art.variants;
+
         public void SetOrder(BeerKind order)
         {
-            if (orderBubble && art) orderBubble.sprite = art.Order(order);
+            _order = order;
+            RefreshBubble();
+        }
+
+        /// <summary>
+        /// Resalta el pedido: 1 = lleva rato esperando (contorno), 2 = es el más urgente (contorno que late).
+        /// </summary>
+        public void SetHint(int level)
+        {
+            if (level == _hint) return;
+            _hint = level;
+            RefreshBubble();
+            if (level == 2 && orderBubble) PixelTween.Punch(this, orderBubble.transform, 0.3f, 0.2f);
+        }
+
+        void RefreshBubble()
+        {
+            if (!orderBubble || !art) return;
+            var hintSprite = art.OrderHint(_order);
+            orderBubble.sprite = _hint > 0 && hintSprite ? hintSprite : art.Order(_order);
         }
 
         public void SetPatience(float value01)
@@ -79,7 +108,8 @@ namespace BarDelPiu.Visual
         public void SetMood(Mood mood)
         {
             _mood = mood;
-            if (body && art && art.variants.Count > 0) body.sprite = art.variants[_variant].Get(mood);
+            var list = Variants;
+            if (body && list != null && list.Count > 0) body.sprite = list[_variant].Get(mood);
         }
 
         /// <summary>Esconde al cliente detrás de la barra (antes de PlayArrive).</summary>
@@ -90,13 +120,17 @@ namespace BarDelPiu.Visual
         }
 
         /// <summary>Sube desde detrás de la barra con rebote y campanita.</summary>
-        public void PlayArrive()
+        /// <summary>Cabecea al ritmo (público del cumpleaños metalero).</summary>
+        public bool headbang;
+
+        public void PlayArrive(bool showUi = true)
         {
             SetUiVisible(false);
             if (!body) return;
             body.transform.localPosition = _bodyHome + Vector3.down * hideDepthPx * Px.Unit;
             Restart(PixelTween.MoveLocal(this, body.transform, _bodyHome, 0.35f, PixelTween.EaseOutBack, () =>
             {
+                if (!showUi) return; // solo público: sin pedido ni paciencia
                 SetUiVisible(true);
                 if (orderBubble) PixelTween.Punch(this, orderBubble.transform, 0.35f, 0.25f);
             }));
@@ -106,6 +140,7 @@ namespace BarDelPiu.Visual
         /// <summary>Pedido entregado: cara feliz, se oculta la paciencia.</summary>
         public void PlayServed()
         {
+            SetHint(0);
             _served = true;
             SetMood(Mood.Feliz);
             SetUiVisible(false);
@@ -116,6 +151,7 @@ namespace BarDelPiu.Visual
         /// <summary>Se va: feliz (saltito) o enojado (temblor + humo). onDone al terminar.</summary>
         public void PlayLeave(bool happy, Action onDone = null)
         {
+            SetHint(0);
             _leaving = true;
             SetUiVisible(false);
             SetMood(happy ? Mood.Feliz : Mood.Enojado);
@@ -157,9 +193,19 @@ namespace BarDelPiu.Visual
 
         void Update()
         {
+            // El pedido del cliente más urgente «late» para llamar la atención
+            if (_hint == 2 && _uiVisible && orderBubble)
+            {
+                _hintPulse += Time.deltaTime;
+                if (_hintPulse >= 0.7f)
+                {
+                    _hintPulse = 0f;
+                    PixelTween.Punch(this, orderBubble.transform, 0.22f, 0.18f);
+                }
+            }
             // Respiración de 1 px; más rápida cuando se impacienta. Parpadeo de la barra al final.
             if (_leaving || !body) return;
-            float speed = _mood == Mood.Enojado ? 6f : _mood == Mood.Impaciente ? 3.5f : 1.6f;
+            float speed = headbang ? 9f : _mood == Mood.Enojado ? 6f : _mood == Mood.Impaciente ? 3.5f : 1.6f;
             _bobT += Time.deltaTime * speed;
             if (_move == null || body.transform.localPosition.y >= _bodyHome.y - Px.Unit * 0.5f)
             {

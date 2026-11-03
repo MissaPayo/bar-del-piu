@@ -1,5 +1,6 @@
 {
  "Background/bg_bar_room.png": {},
+ "Background/bg_hardcore_decor.png": {},
  "Bar/counter.png": {
   "pivot": [
    192,
@@ -18,6 +19,14 @@
    30
   ]
  },
+ "Bar/lamp_off.png": {
+  "pivot": [
+   7,
+   30
+  ]
+ },
+ "Bar/neon_hc_off.png": {},
+ "Bar/neon_hc_on.png": {},
  "Bar/neon_open_off.png": {},
  "Bar/neon_open_on.png": {},
  "Bar/neon_sign_off.png": {},
@@ -220,6 +229,150 @@
    0
   ]
  },
+ "Characters/Customers/customer_hc_0_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_0_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_0_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_0_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_1_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_1_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_1_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_1_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_2_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_2_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_2_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_2_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_3_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_3_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_3_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_3_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_4_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_4_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_4_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_4_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_5_enojado.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_5_feliz.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_5_impaciente.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
+ "Characters/Customers/customer_hc_5_neutral.png": {
+  "pivot": [
+   16,
+   0
+  ]
+ },
  "Characters/Staff/nata_ebrio.png": {
   "pivot": [
    24,
@@ -232,7 +385,37 @@
    0
   ]
  },
+ "Characters/Staff/nata_hc_ebrio.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/nata_hc_feliz.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/nata_hc_neutral.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/nata_hc_sorpresa.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
  "Characters/Staff/nata_neutral.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/nata_punk.png": {
   "pivot": [
    24,
    0
@@ -256,7 +439,37 @@
    0
   ]
  },
+ "Characters/Staff/pipe_hc_ebrio.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/pipe_hc_feliz.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/pipe_hc_neutral.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/pipe_hc_sorpresa.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
  "Characters/Staff/pipe_neutral.png": {
+  "pivot": [
+   24,
+   0
+  ]
+ },
+ "Characters/Staff/pipe_punk.png": {
   "pivot": [
    24,
    0
@@ -305,7 +518,20 @@
    0
   ]
  },
+ "Exterior/exterior_hardcore_decor.png": {},
  "Exterior/logo_kid.png": {},
+ "Exterior/moto_0.png": {
+  "pivot": [
+   20,
+   0
+  ]
+ },
+ "Exterior/moto_1.png": {
+  "pivot": [
+   20,
+   0
+  ]
+ },
  "FX/fx_bubble.png": {},
  "FX/fx_coin_0.png": {},
  "FX/fx_coin_1.png": {},
@@ -692,19 +918,19 @@
  },
  "Glass/glass_back.png": {
   "pivot": [
-   8,
+   9,
    0
   ]
  },
  "Glass/glass_front.png": {
   "pivot": [
-   8,
+   9,
    0
   ]
  },
  "Glass/glass_mask.png": {
   "pivot": [
-   8,
+   9,
    0
   ]
  },
@@ -757,6 +983,12 @@
    0
   ]
  },
+ "Taps/handle_ambar_hint.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
  "Taps/handle_ambar_idle.png": {
   "pivot": [
    9,
@@ -775,6 +1007,12 @@
    0
   ]
  },
+ "Taps/handle_negra_hint.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
  "Taps/handle_negra_idle.png": {
   "pivot": [
    9,
@@ -788,6 +1026,12 @@
   ]
  },
  "Taps/handle_negra_sel.png": {
+  "pivot": [
+   9,
+   0
+  ]
+ },
+ "Taps/handle_rubia_hint.png": {
   "pivot": [
    9,
    0
@@ -852,20 +1096,38 @@
  "UI/logo.png": {},
  "UI/order_ambar.png": {
   "pivot": [
-   7,
-   0
+   9,
+   2
+  ]
+ },
+ "UI/order_ambar_hint.png": {
+  "pivot": [
+   9,
+   2
   ]
  },
  "UI/order_negra.png": {
   "pivot": [
-   7,
-   0
+   9,
+   2
+  ]
+ },
+ "UI/order_negra_hint.png": {
+  "pivot": [
+   9,
+   2
   ]
  },
  "UI/order_rubia.png": {
   "pivot": [
-   7,
-   0
+   9,
+   2
+  ]
+ },
+ "UI/order_rubia_hint.png": {
+  "pivot": [
+   9,
+   2
   ]
  },
  "UI/panel_cream.png": {
@@ -895,5 +1157,7 @@
    0,
    0
   ]
- }
+ },
+ "UI/stamp_hardcore.png": {},
+ "UI/veil_dither.png": {}
 }

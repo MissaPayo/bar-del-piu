@@ -15,6 +15,10 @@ namespace BarDelPiu.Visual
         public SpriteRenderer front;
         public BeerPourStream stream;
         public ParticleSystem splash;
+        [Tooltip("Pantalla de concentración con la jarra grande (se muestra mientras se sirve).")]
+        public PourFocus focus;
+        [Tooltip("Otros renderers de líquido que copian este vaso (la jarra grande de la concentración).")]
+        public SpriteRenderer[] mirrorLiquids;
 
         [Header("Geometría (px, ver glass.json)")]
         public int innerBottomPx = 3;
@@ -100,6 +104,11 @@ namespace BarDelPiu.Visual
             if (pouring == _pouring) return;
             _pouring = pouring;
             if (stream) stream.SetActive(pouring, SurfaceWorld);
+            if (focus && focus.isActiveAndEnabled)
+            {
+                if (pouring) focus.Show();
+                else focus.HideSoon();
+            }
             if (splash)
             {
                 if (pouring) splash.Play();
@@ -179,6 +188,9 @@ namespace BarDelPiu.Visual
             _mpb.SetFloat(BottomId, innerBottomPx);
             _mpb.SetFloat(TopId, innerTopPx);
             liquid.SetPropertyBlock(_mpb);
+            if (mirrorLiquids != null)
+                foreach (var m in mirrorLiquids)
+                    if (m) m.SetPropertyBlock(_mpb);
         }
     }
 }

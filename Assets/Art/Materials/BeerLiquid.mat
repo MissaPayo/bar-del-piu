@@ -33,7 +33,7 @@ Material:
     - _Flash: 0
     - _Foam: 0.15
     - _InnerBottom: 3
-    - _InnerTop: 22
+    - _InnerTop: 26
     - _Liquid: 0.5
     - _ShowTarget: 0
     - _Target: 0.8
@@ -43,6 +43,6 @@ Material:
     - _FoamShade: {r: 0.91, g: 0.86, b: 0.76, a: 1}
     - _LiquidDark: {r: 0.85, g: 0.63, b: 0.18999997, a: 1}
     - _LiquidLight: {r: 0.96, g: 0.78, b: 0.29999998, a: 1}
-    - _MaskSize: {r: 16, g: 24, b: 0, a: 0}
+    - _MaskSize: {r: 18, g: 28, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

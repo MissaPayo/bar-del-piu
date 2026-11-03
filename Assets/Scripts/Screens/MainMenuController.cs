@@ -21,6 +21,8 @@ namespace BarDelPiu.Screens
         public PixelText recordText;
         public LeaderboardView leaderboard;
         public MenuPlayground playground;
+        [Tooltip("Sello «MODO HARDCORE» que aparece junto a JUGAR cuando hay una ampolleta rota.")]
+        public SpriteRenderer hardcoreStamp;
         public IdleWatcher idleWatcher;
 
         enum Overlay { None, Ranking, Settings, Credits, Birthday }
@@ -42,9 +44,9 @@ namespace BarDelPiu.Screens
 
         IEnumerator Start()
         {
-            AudioManager.PlayMusic(MusicTrack.Menu);
+            AudioManager.PlayMusic(MenuMusic);
             AudioManager.SetMusicIntensity(0f);
-            AudioManager.SetAmbience(true);
+            AudioManager.SetAmbience(!BarMischief.AnyLampBroken); // en Hardcore solo la música pesada
             bar.LightsOnInstant();
             bar.HideStaff();
             foreach (var c in bar.customers) c.HideBehindCounter();
@@ -73,6 +75,8 @@ namespace BarDelPiu.Screens
             _birthday = BirthdayEasterEgg.Create(transform, skin, bar, CloseOverlay);
 
             RefreshRecord();
+            ApplyHardcoreLook();
+            if (playground) playground.HardcoreActivated += OnHardcoreActivated;
 
             // Entrada animada
             foreach (var b in _menuButtons) b.gameObject.SetActive(false);
@@ -111,6 +115,7 @@ namespace BarDelPiu.Screens
                 yield return new WaitForSeconds(0.15f);
             }
             StartCoroutine(StaffBanter());
+            if (BarMischief.AnyLampBroken && hardcoreStamp) StartCoroutine(StampPulse());
         }
 
         /// <summary>Pipe y Nata cambian de expresión de vez en cuando y dicen algo.</summary>
@@ -150,6 +155,7 @@ namespace BarDelPiu.Screens
             foreach (var b in _menuButtons) b.gameObject.SetActive(menu);
             logo.enabled = menu;
             recordText.gameObject.SetActive(menu);
+            if (hardcoreStamp) hardcoreStamp.enabled = menu && BarMischief.AnyLampBroken;
             if (playground) playground.Interactive = menu;
             leaderboard.gameObject.SetActive(o == Overlay.Ranking);
             _rankingBack.gameObject.SetActive(o == Overlay.Ranking);
@@ -194,12 +200,44 @@ namespace BarDelPiu.Screens
         {
             var was = _overlay;
             Show(Overlay.None);
-            if (was == Overlay.Credits) AudioManager.PlayMusic(MusicTrack.Menu);
+            if (was == Overlay.Credits) AudioManager.PlayMusic(MenuMusic);
             if (was == Overlay.Birthday)
                 foreach (var who in new[] { Speaker.Pipe, Speaker.Nata })
                     if (BarMischief.IsDrunk(who)) bar.HideDown(who); // el ebrio vuelve a dormir
             RefreshRecord();
             (was == Overlay.Ranking ? _ranking : was == Overlay.Settings || was == Overlay.Birthday ? _settingsBtn : was == Overlay.Credits ? _creditsBtn : _play).Focus();
+        }
+
+        static MusicTrack MenuMusic => BarMischief.AnyLampBroken ? MusicTrack.Hardcore : MusicTrack.Menu;
+
+        /// <summary>Con una ampolleta rota el menú se ve punk: así queda claro que la próxima partida es Hardcore.</summary>
+        void ApplyHardcoreLook()
+        {
+            bool hc = BarMischief.AnyLampBroken;
+            bar.SetHardcoreLook(hc);
+            if (hardcoreStamp) hardcoreStamp.enabled = hc && _overlay == Overlay.None;
+        }
+
+        void OnHardcoreActivated()
+        {
+            AudioManager.Play(Sfx.HardcoreSting);
+            AudioManager.PlayMusic(MusicTrack.Hardcore);
+            AudioManager.SetAmbience(false);
+            ApplyHardcoreLook();
+            if (hardcoreStamp)
+            {
+                PixelTween.Punch(this, hardcoreStamp.transform, 0.5f, 0.35f);
+                StartCoroutine(StampPulse());
+            }
+        }
+
+        IEnumerator StampPulse()
+        {
+            while (hardcoreStamp && BarMischief.AnyLampBroken)
+            {
+                yield return new WaitForSeconds(1.6f);
+                if (hardcoreStamp.enabled) PixelTween.Punch(this, hardcoreStamp.transform, 0.15f, 0.2f);
+            }
         }
 
         void RefreshRecord()

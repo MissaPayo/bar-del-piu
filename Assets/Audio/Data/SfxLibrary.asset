@@ -341,3 +341,19 @@ MonoBehaviour:
     bus: 3
     cooldown: 0.03
     maxVoices: 4
+  - id: 41
+    clips:
+    - {fileID: 8300000, guid: 9b50f34ec6d2125418876a672c27ac6d, type: 3}
+    volume: 1
+    pitch: {x: 0.97, y: 1.03}
+    bus: 3
+    cooldown: 0.03
+    maxVoices: 4
+  - id: 42
+    clips:
+    - {fileID: 8300000, guid: 4435e6fc2e07e44448ceb9ec8be704ef, type: 3}
+    volume: 1
+    pitch: {x: 0.97, y: 1.03}
+    bus: 3
+    cooldown: 0.03
+    maxVoices: 4

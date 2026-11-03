@@ -42,7 +42,7 @@ namespace BarDelPiu.Screens
         void Start()
         {
             AudioManager.PlayMusic(MusicTrack.None);
-            AudioManager.SetAmbience(true);
+            AudioManager.SetAmbience(!BarMischief.AnyLampBroken);
             _skip = PixelButton.Create(transform, skin, "SALTAR", new Vector2Int(48, 14), Scr(290, 170), Skip, SortOrder.Overlay + 20);
             _skip.clickSound = Sfx.UiBack;
             arrow.enabled = false;

@@ -228,6 +228,20 @@ namespace BarDelPiu.EditorTools
             art.orderRubia = S("UI/order_rubia.png");
             art.orderAmbar = S("UI/order_ambar.png");
             art.orderNegra = S("UI/order_negra.png");
+            art.orderRubiaHint = S("UI/order_rubia_hint.png");
+            art.orderAmbarHint = S("UI/order_ambar_hint.png");
+            art.orderNegraHint = S("UI/order_negra_hint.png");
+            art.hardcoreVariants.Clear();
+            for (int i = 0; i < 6; i++)
+            {
+                art.hardcoreVariants.Add(new CustomerArt.Variant
+                {
+                    neutral = S($"Characters/Customers/customer_hc_{i}_neutral.png"),
+                    feliz = S($"Characters/Customers/customer_hc_{i}_feliz.png"),
+                    impaciente = S($"Characters/Customers/customer_hc_{i}_impaciente.png"),
+                    enojado = S($"Characters/Customers/customer_hc_{i}_enojado.png"),
+                });
+            }
             var grad = new Gradient();
             grad.SetKeys(
                 new[]
@@ -248,10 +262,14 @@ namespace BarDelPiu.EditorTools
             string[] ex = { "neutral", "feliz", "sorpresa", "ebrio" };
             st.pipe = new Sprite[ex.Length];
             st.nata = new Sprite[ex.Length];
+            st.pipeHardcore = new Sprite[ex.Length];
+            st.nataHardcore = new Sprite[ex.Length];
             for (int i = 0; i < ex.Length; i++)
             {
                 st.pipe[i] = S($"Characters/Staff/pipe_{ex[i]}.png");
                 st.nata[i] = S($"Characters/Staff/nata_{ex[i]}.png");
+                st.pipeHardcore[i] = S($"Characters/Staff/pipe_hc_{ex[i]}.png");
+                st.nataHardcore[i] = S($"Characters/Staff/nata_hc_{ex[i]}.png");
             }
             EditorUtility.SetDirty(st);
             return st;
@@ -313,6 +331,8 @@ namespace BarDelPiu.EditorTools
             });
             lib.tracks.Add(new MusicEntry { track = MusicTrack.Results, main = A("Music/music_results.wav"), loop = false });
             lib.tracks.Add(new MusicEntry { track = MusicTrack.Birthday, main = A("Music/music_birthday.wav"), loop = false });
+            lib.tracks.Add(new MusicEntry { track = MusicTrack.Hardcore, main = A("Music/music_hardcore.wav"), volume = 0.85f });
+            lib.tracks.Add(new MusicEntry { track = MusicTrack.BirthdayMetal, main = A("Music/music_birthday_metal.wav"), loop = false });
             lib.ambience = A("Ambience/ambience_bar.wav");
             EditorUtility.SetDirty(lib);
             return lib;
@@ -437,7 +457,13 @@ namespace BarDelPiu.EditorTools
             bar.globalLight = global;
             bar.staff = staffArt;
             bar.lampBroken = S("Bar/lamp_broken.png");
+            bar.lampSpriteOn = S("Bar/lamp.png");
+            bar.lampSpriteOff = S("Bar/lamp_off.png");
             SR("Background", world, S("Background/bg_bar_room.png"), Vector3.zero, SortOrder.Background);
+            // Modo Hardcore: carteles de bandas y grafitis sobre la pared (se activan con BarScene.SetHardcoreLook)
+            bar.hardcoreDecor = SR("HardcoreDecor", world, S("Background/bg_hardcore_decor.png"), Vector3.zero, SortOrder.Background + 5);
+            bar.neonHardcoreOn = S("Bar/neon_hc_on.png");
+            bar.neonHardcoreOff = S("Bar/neon_hc_off.png");
             SR("Underbar", world, S("Bar/underbar.png"), Scr(160, 44), SortOrder.Underbar);
             SR("Counter", world, S("Bar/counter.png"), Scr(160, 56), SortOrder.Counter);
 
@@ -492,6 +518,7 @@ namespace BarDelPiu.EditorTools
                 tap.idle = S($"Taps/handle_{keys[i]}_idle.png");
                 tap.selected = S($"Taps/handle_{keys[i]}_sel.png");
                 tap.pulled = S($"Taps/handle_{keys[i]}_pull.png");
+                tap.hint = S($"Taps/handle_{keys[i]}_hint.png");
                 var nozzle = new GameObject("Nozzle").transform;
                 nozzle.SetParent(tapGo.transform, false);
                 nozzle.localPosition = new Vector3(0, towerMeta.SpoutY(i) / 16f, 0);
@@ -503,11 +530,13 @@ namespace BarDelPiu.EditorTools
             var glass = BuildGlass(world, m, fx);
             glass.transform.position = Scr(48 + towerMeta.SpoutX(0), 55);
             var hit = glass.gameObject.AddComponent<BoxCollider2D>();
-            hit.size = new Vector2(1.4f, 2.6f); // más grande que el vaso: dedo en celular
-            hit.offset = new Vector2(0, 0.85f);
+            hit.size = new Vector2(1.5f, 2.9f); // más grande que el vaso: dedo en celular
+            hit.offset = new Vector2(0, 0.95f);
             hit.isTrigger = true;
             bar.glass = glass;
             bar.glassHitArea = hit;
+            glass.focus = BuildPourFocus(world, glass, m, font);
+            glass.mirrorLiquids = new[] { glass.focus.bigLiquid };
             if (savePrefabs)
             {
                 SavePrefab(glass.gameObject, "Glass");
@@ -517,6 +546,8 @@ namespace BarDelPiu.EditorTools
             // Pipe y Nata (bustos detrás de la barra)
             bar.pipe = SR("Pipe", world, staffArt.pipe[1], Scr(pipeX, 46), SortOrder.Customers + 5);
             bar.nata = SR("Nata", world, staffArt.nata[1], Scr(nataX, 46), SortOrder.Customers + 5);
+            bar.pipePunk = SR("PunkLook", bar.pipe.transform, S("Characters/Staff/pipe_punk.png"), Vector3.zero, SortOrder.Customers + 6);
+            bar.nataPunk = SR("PunkLook", bar.nata.transform, S("Characters/Staff/nata_punk.png"), Vector3.zero, SortOrder.Customers + 6);
 
             // Clientes
             var customersRoot = new GameObject("Customers").transform;
@@ -592,6 +623,10 @@ namespace BarDelPiu.EditorTools
             ctrl.errorIcons = errors;
             ctrl.errorEmpty = S("UI/icon_error_empty.png");
             ctrl.errorFull = S("UI/icon_error_full.png");
+            ctrl.urgentArrow = SR("UrgentArrow", hud, S("UI/arrow_down.png"), Vector3.zero, SortOrder.CustomerUi + 10, m.unlit);
+            ctrl.screenFlash = SR("ScreenFlash", hud, S("UI/px_white.png"), new Vector3(-12f, -7f, 0f), SortOrder.Overlay + 40, m.unlit);
+            ctrl.screenFlash.transform.localScale = new Vector3(24 * 16, 14 * 16, 1);
+            ctrl.screenFlash.enabled = false;
 
             EditorSceneManager.SaveScene(scene, ScenePath);
         }
@@ -640,6 +675,8 @@ namespace BarDelPiu.EditorTools
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var b = BuildBackdrop(m, font, ca, st, fx, profile, pipeX: 284, nataX: 230); // a la derecha: la torre de llaves tapaba a Pipe
             b.bar.neon.gameObject.SetActive(false); // el logo ocupa el lugar del letrero
+            b.bar.glass.focus.gameObject.SetActive(false);
+            b.bar.glass.focus = null;
             b.bar.neon = null;
             b.bar.openSign.gameObject.SetActive(false); // asomaba detrás del logo
             b.bar.openSign = null;
@@ -660,6 +697,7 @@ namespace BarDelPiu.EditorTools
             play.bar = b.bar;
             play.lampBroken = S("Bar/lamp_broken.png");
             ctrl.playground = play;
+            ctrl.hardcoreStamp = SR("HardcoreStamp", ctrl.transform, S("UI/stamp_hardcore.png"), Scr(244, 104), SortOrder.Ui + 20, m.unlit);
             ctrl.idleWatcher = ctrl.gameObject.AddComponent<IdleWatcher>();
             EditorSceneManager.SaveScene(scene, "Assets/Scenes/Menu.unity");
         }
@@ -745,14 +783,18 @@ namespace BarDelPiu.EditorTools
             Vector3 P(float x, float y) => new Vector3(x / 16f, y / 16f, 0);
 
             var lights = new GameObject("Lights").transform;
-            Light("Night", lights, Vector3.zero, new Color(0.7f, 0.75f, 1f), 0.65f, 0, Light2D.LightType.Global);
+            var night = Light("Night", lights, Vector3.zero, new Color(0.7f, 0.75f, 1f), 0.65f, 0, Light2D.LightType.Global);
             Light("StreetLamp", lights, P(meta.lamp_px[0], meta.lamp_px[1]), new Color(1f, 0.85f, 0.6f), 1.2f, 6f);
-            Light("WindowL", lights, P(-74, -24), new Color(1f, 0.75f, 0.4f), 1.0f, 4.5f);
-            Light("WindowR", lights, P(74, -24), new Color(1f, 0.75f, 0.4f), 1.0f, 4.5f);
-            Light("Door", lights, P(0, -36), new Color(1f, 0.78f, 0.45f), 0.8f, 3.5f);
+            var warm = new[]
+            {
+                Light("WindowL", lights, P(-74, -24), new Color(1f, 0.75f, 0.4f), 1.0f, 4.5f),
+                Light("WindowR", lights, P(74, -24), new Color(1f, 0.75f, 0.4f), 1.0f, 4.5f),
+                Light("Door", lights, P(0, -36), new Color(1f, 0.78f, 0.45f), 0.8f, 3.5f),
+            };
 
             var street = new GameObject("Street").transform;
             SR("Exterior", street, S("Exterior/bg_exterior.png"), Vector3.zero, SortOrder.Background);
+            var hcDecor = SR("HardcoreDecor", street, S("Exterior/exterior_hardcore_decor.png"), Vector3.zero, SortOrder.Background + 5);
 
             var neon = SR("NeonSign", street, S("Bar/neon_sign_on.png"), P(0, 72), SortOrder.WallDecor, m.glowNeon);
             var flicker = neon.gameObject.AddComponent<NeonFlicker>();
@@ -784,6 +826,14 @@ namespace BarDelPiu.EditorTools
 
             var ctrl = new GameObject("IdleScreen").AddComponent<IdleScreenController>();
             ctrl.logo = logo;
+            ctrl.hardcoreDecor = hcDecor;
+            ctrl.neon = flicker;
+            ctrl.neonHardcoreOn = S("Bar/neon_hc_on.png");
+            ctrl.neonHardcoreOff = S("Bar/neon_hc_off.png");
+            ctrl.nightLight = night;
+            ctrl.warmLights = warm;
+            ctrl.cars = loop;
+            ctrl.motoFrames = new[] { S("Exterior/moto_0.png"), S("Exterior/moto_1.png") };
             ctrl.prompt = Text("Prompt", ctrl.transform, P(0, -63), font, m.unlit, "TOCA LA PANTALLA PARA ENTRAR",
                 BarPalette.Cream, PixelText.Align.Center);
             ctrl.prompt.sortingOrder = SortOrder.Overlay;
@@ -859,6 +909,37 @@ namespace BarDelPiu.EditorTools
                 BarPalette.CafeDark, PixelText.Align.Left, 1, false, 114);
             d.nameText.sortingOrder = d.bodyText.sortingOrder = SortOrder.Dialogue + 3;
             return d;
+        }
+
+        /// <summary>
+        /// Capa oscura sobre los clientes + jarra x3 al centro mientras se sirve (se ve aunque el dedo tape el vaso).
+        /// </summary>
+        static PourFocus BuildPourFocus(Transform parent, BeerGlassVisual glass, Mats m, PixelFont font)
+        {
+            const int order = 250; // sobre clientes (100-150) y barra (200), bajo llaves y vaso real (300+)
+            var go = new GameObject("PourFocus");
+            go.transform.SetParent(parent, false);
+            var f = go.AddComponent<PourFocus>();
+            // Velo tramado sepia: los clientes quedan como una foto antigua punteada (x 92..324, y 50..164)
+            f.overlay = SR("Veil", go.transform, S("UI/veil_dither.png"), Scr(208, 107), order, m.unlit);
+            f.overlay.drawMode = SpriteDrawMode.Tiled;
+            f.overlay.size = new Vector2(232, 114) / 16f;
+            f.overlay.color = new Color(1f, 1f, 1f, 0f);
+            f.overlayAlpha = 1f;
+            var big = new GameObject("BigGlass").transform;
+            big.SetParent(go.transform, false);
+            big.position = Scr(208, 64);
+            big.localScale = new Vector3(3, 3, 1);
+            f.bigCard = SR("Card", go.transform, S("UI/panel_dark.png"), Scr(208, 106), order + 1, m.unlit);
+            f.bigCard.drawMode = SpriteDrawMode.Sliced;
+            f.bigCard.size = new Vector2(70, 96) / 16f;
+            f.bigBack = SR("Back", big, S("Glass/glass_back.png"), Vector3.zero, order + 2, m.unlit);
+            f.bigLiquid = SR("Liquid", big, S("Glass/glass_mask.png"), Vector3.zero, order + 3, m.beer);
+            f.bigFront = SR("Front", big, S("Glass/glass_front.png"), Vector3.zero, order + 4, m.unlit);
+            f.hint = Text("Hint", go.transform, Scr(208, 152), font, m.unlit, "¡SUELTA EN LA LÍNEA!", BarPalette.Cream,
+                PixelText.Align.Center);
+            f.hint.sortingOrder = order + 5;
+            return f;
         }
 
         static void SavePrefab(GameObject go, string name)

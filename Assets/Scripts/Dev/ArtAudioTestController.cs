@@ -27,6 +27,10 @@ namespace BarDelPiu.Dev
         public PixelText comboText;
         public SpriteRenderer[] errorIcons;
         public Sprite errorEmpty, errorFull;
+        [Tooltip("Flecha que marca al cliente más urgente.")]
+        public SpriteRenderer urgentArrow;
+        [Tooltip("Destello a pantalla completa (aviso del modo Hardcore).")]
+        public SpriteRenderer screenFlash;
 
         [Header("Simulación de servido")]
         public float pourRate = 0.32f;
@@ -34,6 +38,18 @@ namespace BarDelPiu.Dev
         public float patienceSeconds = 22f;
         [Tooltip("En modo Hardcore la paciencia se agota este factor más rápido (1.2 = 20 %).")]
         public float hardcorePatienceSpeed = 1.2f;
+
+        [Header("Tiempos justos")]
+        [Tooltip("Segundos mínimos entre la llegada de un cliente y la del siguiente (evita oleadas).")]
+        public float minArrivalGap = 2.5f;
+        [Tooltip("Segundos de gracia: la paciencia no baja apenas llega el cliente.")]
+        public float arrivalGrace = 1f;
+        [Tooltip("Segundos extra de paciencia por cada cliente que ya está esperando cuando llega uno nuevo.")]
+        public float extraPatiencePerWaiting = 2.5f;
+        [Tooltip("Mientras se llena la jarra (clientes tapados) la paciencia baja a este ritmo.")]
+        public float patienceSpeedWhilePouring = 0.5f;
+        [Tooltip("Segundos esperando sin ser atendido antes de resaltar su pedido y su llave.")]
+        public float hintAfterSeconds = 4f;
         public float foamSettlePerSecond = 0.02f;
         public float idealLiquid = 0.75f;
         public float idealFoam = 0.2f;
@@ -44,6 +60,10 @@ namespace BarDelPiu.Dev
         readonly BeerKind[] _orders = new BeerKind[4];
         readonly float[] _patience = new float[4];
         readonly bool[] _busy = new bool[4];
+        readonly float[] _patienceDur = new float[4];
+        readonly float[] _waited = new float[4];
+        float _nextArrivalAt;
+        readonly bool[] _warned = new bool[3];
         int _score, _combo, _errors;
         float _time = 90f;
         bool _rush, _showTarget = true;
@@ -66,36 +86,70 @@ namespace BarDelPiu.Dev
         void Start()
         {
             if (!cam) cam = Camera.main;
-            AudioManager.PlayMusic(MusicTrack.Game);
-            AudioManager.SetAmbience(true);
-            for (int i = 0; i < customers.Length; i++) NewCustomer(i, 0.4f * i);
+            bool hardcore = GameSession.BeginMatch();
+            AudioManager.PlayMusic(hardcore ? MusicTrack.Hardcore : MusicTrack.Game);
+            AudioManager.SetAmbience(!hardcore); // en Hardcore manda la música pesada, sin murmullo encima
+            if (urgentArrow) urgentArrow.enabled = false;
+            if (screenFlash) screenFlash.enabled = false;
+            for (int i = 0; i < customers.Length; i++) NewCustomer(i, 0.4f);
             SelectTap(0, false);
             glass.SetTargetLevel(idealLiquid + idealFoam, _showTarget);
-            if (GameSession.BeginMatch()) StartHardcore();
+            if (hardcore) StartCoroutine(HardcoreIntro());
             else if (dialogue) dialogue.Say(BarMischief.Available(Speaker.Pipe), StaffExpression.Feliz, PipeLines[0], 3.5f);
             RefreshHud();
         }
 
-        /// <summary>Modo Hardcore: ampolletas rotas en el menú → bar a oscuras y multiplicador por potencias de 3.</summary>
-        void StartHardcore()
+        /// <summary>
+        /// Aviso del modo Hardcore: golpe de guitarra, destello rojo, letrero, las luces se cortan
+        /// y Nata (o Pipe) explica el multiplicador. Música pesada y clientes punk/metaleros.
+        /// </summary>
+        System.Collections.IEnumerator HardcoreIntro()
         {
             var bar = FindFirstObjectByType<BarDelPiu.Screens.BarScene>();
+            if (bar) bar.SetHardcoreLook(true); // carteles, grafitis, neón HARDCORE y luz roja
+            AudioManager.Play(Sfx.HardcoreSting);
+            AudioManager.Duck(0.7f, 1.2f);
+            if (FeedbackDirector.Instance && FeedbackDirector.Instance.cameraShake) FeedbackDirector.Instance.cameraShake.Shake(3, 0.5f);
+            StartCoroutine(Flash(BarPalette.Red, 0.6f));
+            FeedbackDirector.Instance.Message(new Vector3(0f, 2.2f, 0f), "¡MODO HARDCORE!", BarPalette.Red, 2);
+            // las ampolletas chispean y mueren una por una
             if (bar)
             {
                 for (int i = 0; i < bar.lamps.Length; i++)
                 {
+                    for (int k = 0; k < 3; k++)
+                    {
+                        bar.lampLights[i].intensity = k % 2 == 0 ? 0f : bar.lampOn;
+                        yield return new WaitForSeconds(0.06f);
+                    }
                     if (bar.lampBroken) bar.lamps[i].sprite = bar.lampBroken;
                     bar.lamps[i].color = Color.white;
+                    bar.lampLights[i].intensity = 0f;
+                    AudioManager.Play(Sfx.GlassBreak, 0.5f, 1f + i * 0.1f);
+                    if (FeedbackDirector.Instance) FeedbackDirector.Instance.Sparks(bar.lamps[i].transform.position + Vector3.down * 1.7f, 10);
+                    yield return new WaitForSeconds(0.15f);
                 }
-                for (int i = 0; i < bar.lampLights.Length; i++)
-                    if (bar.lampLights[i]) bar.lampLights[i].intensity = i == bar.lampLights.Length - 1 ? 0.35f : 0f; // solo queda la luz de las llaves
+                for (int i = bar.lamps.Length; i < bar.lampLights.Length; i++)
+                    if (bar.lampLights[i]) bar.lampLights[i].intensity = 0.35f; // solo queda la luz de las llaves
                 if (bar.globalLight) bar.globalLight.intensity = 0.22f;
             }
-            AudioManager.Play(Sfx.GlassBreak, 0.6f);
-            FeedbackDirector.Instance.Message(new Vector3(0f, 2.5f, 0f), "¡MODO HARDCORE!", BarPalette.Red, 2);
+            yield return new WaitForSeconds(0.4f);
             if (dialogue)
                 dialogue.Say(BarMischief.Available(Speaker.Nata), StaffExpression.Sorpresa,
                     "¡SIN LUZ! CADA ACIERTO SEGUIDO MULTIPLICA X3. ¡SUERTE!", 3.5f);
+        }
+
+        System.Collections.IEnumerator Flash(Color color, float duration)
+        {
+            if (!screenFlash) yield break;
+            screenFlash.enabled = true;
+            for (float t = 0f; t < duration; t += Time.deltaTime)
+            {
+                float a = Mathf.Ceil((1f - t / duration) * 4f) / 4f * 0.6f; // fundido en pasos
+                screenFlash.color = new Color(color.r, color.g, color.b, a);
+                yield return null;
+            }
+            screenFlash.enabled = false;
         }
 
         void NewCustomer(int i, float delay)
@@ -103,9 +157,40 @@ namespace BarDelPiu.Dev
             _busy[i] = true;
             _orders[i] = (BeerKind)Random.Range(0, 3);
             _patience[i] = 1f;
+            _waited[i] = 0f;
             var c = customers[i];
-            c.Setup(Random.Range(0, 8), _orders[i]);
-            StartCoroutine(ArriveLater(i, delay));
+            c.Setup(PickVariant(i), _orders[i], GameSession.Hardcore);
+            // Nunca llegan dos clientes casi juntos: se respeta un espacio mínimo entre llegadas
+            float at = Mathf.Max(Time.time + delay, _nextArrivalAt);
+            _nextArrivalAt = at + minArrivalGap;
+            StartCoroutine(ArriveLater(i, at - Time.time));
+        }
+
+        readonly int[] _variant = { -1, -1, -1, -1 };
+
+        /// <summary>Elige un cliente distinto a los que ya están en la barra (sin gemelos lado a lado).</summary>
+        int PickVariant(int slot)
+        {
+            int count = GameSession.Hardcore ? 6 : 8;
+            for (int tries = 0; tries < 12; tries++)
+            {
+                int v = Random.Range(0, count);
+                if (System.Array.IndexOf(_variant, v) < 0)
+                {
+                    _variant[slot] = v;
+                    return v;
+                }
+            }
+            _variant[slot] = Random.Range(0, count);
+            return _variant[slot];
+        }
+
+        int WaitingCount()
+        {
+            int n = 0;
+            for (int i = 0; i < customers.Length; i++)
+                if (!_busy[i]) n++;
+            return n;
         }
 
         System.Collections.IEnumerator ArriveLater(int i, float delay)
@@ -113,6 +198,9 @@ namespace BarDelPiu.Dev
             customers[i].HideBehindCounter();
             yield return new WaitForSeconds(delay);
             customers[i].PlayArrive();
+            // Más clientes esperando = un poco más de paciencia para cada nuevo (más justo, no más difícil)
+            _patienceDur[i] = patienceSeconds + extraPatiencePerWaiting * Mathf.Min(3, WaitingCount());
+            _waited[i] = -arrivalGrace;
             _busy[i] = false;
         }
 
@@ -228,8 +316,12 @@ namespace BarDelPiu.Dev
             for (int i = 0; i < customers.Length; i++)
             {
                 if (_busy[i]) continue;
+                _waited[i] += dt;
+                if (_waited[i] < 0f) continue; // gracia de llegada
                 float speed = GameSession.Hardcore ? hardcorePatienceSpeed : 1f;
-                _patience[i] -= dt * speed / patienceSeconds;
+                if (_pouring) speed *= patienceSpeedWhilePouring; // clientes tapados: baja más lento
+                float dur = _patienceDur[i] > 0f ? _patienceDur[i] : patienceSeconds;
+                _patience[i] -= dt * speed / dur;
                 customers[i].SetPatience(_patience[i]);
                 if (_patience[i] <= 0f)
                 {
@@ -237,6 +329,48 @@ namespace BarDelPiu.Dev
                     AddError(customers[i].transform.position + Vector3.up * 3f, "¡SE FUE!");
                     int idx = i;
                     customers[i].PlayLeave(false, () => NewCustomer(idx, 1.2f));
+                }
+            }
+            UpdateHints();
+        }
+
+        /// <summary>
+        /// Resaltado: quien lleva más de 4 s esperando muestra contorno en su pedido y en la llave de su cerveza.
+        /// El más urgente (el que tiene menos tiempo restante) además late y lleva una flecha.
+        /// </summary>
+        void UpdateHints()
+        {
+            int urgent = -1;
+            float urgentLeft = float.MaxValue;
+            for (int i = 0; i < customers.Length; i++)
+            {
+                if (_busy[i] || _waited[i] < hintAfterSeconds) continue;
+                float left = _patience[i] * (_patienceDur[i] > 0f ? _patienceDur[i] : patienceSeconds);
+                if (left < urgentLeft)
+                {
+                    urgentLeft = left;
+                    urgent = i;
+                }
+            }
+            var tapHint = new int[taps.Length];
+            for (int i = 0; i < customers.Length; i++)
+            {
+                int level = _busy[i] || _waited[i] < hintAfterSeconds ? 0 : i == urgent ? 2 : 1;
+                customers[i].SetHint(level);
+                if (level == 0) continue;
+                int t = (int)_orders[i];
+                if (t < tapHint.Length) tapHint[t] = Mathf.Max(tapHint[t], level);
+            }
+            for (int t = 0; t < taps.Length; t++) taps[t].SetHint(tapHint[t]);
+
+            if (urgentArrow)
+            {
+                urgentArrow.enabled = urgent >= 0 && !_pouring;
+                if (urgent >= 0)
+                {
+                    float bounce = Mathf.Round(Mathf.Abs(Mathf.Sin(Time.time * 5f)) * 3f);
+                    urgentArrow.transform.position = Px.Snap(customers[urgent].orderBubble.transform.position +
+                                                             new Vector3(0.35f, 1.65f + bounce * Px.Unit, 0f));
                 }
             }
         }
@@ -247,6 +381,9 @@ namespace BarDelPiu.Dev
             int sec = Mathf.CeilToInt(_time);
             if (sec <= 10 && sec != _lastTick && sec > 0) AudioManager.Play(Sfx.TimerTick);
             _lastTick = sec;
+            CheckTimeWarning(60, 0, BarPalette.AmberLight);
+            CheckTimeWarning(30, 1, BarPalette.Neon);
+            CheckTimeWarning(10, 2, BarPalette.Red);
             if (_time <= 20f && !_rush)
             {
                 _rush = true;
@@ -255,6 +392,33 @@ namespace BarDelPiu.Dev
             if (_time <= 0f) EndGame();
             RefreshHud();
         }
+
+        /// <summary>Aviso al quedar 60, 30 y 10 segundos: letrero, campanadas y el reloj late (normal y Hardcore).</summary>
+        void CheckTimeWarning(int seconds, int slot, Color color)
+        {
+            if (_warned[slot] || _time > seconds) return;
+            _warned[slot] = true;
+            AudioManager.Play(Sfx.TimeWarning);
+            AudioManager.Duck(0.4f, 0.8f);
+            FeedbackDirector.Instance.Message(new Vector3(0f, 1.4f, 0f), "¡QUEDAN " + seconds + " SEGUNDOS!", color, 2);
+            if (timerText) StartCoroutine(PulseTimer(color, seconds <= 10 ? 6 : 3));
+            if (seconds <= 10 && FeedbackDirector.Instance.cameraShake) FeedbackDirector.Instance.cameraShake.Shake(1, 0.3f);
+            if (seconds <= 30) AudioManager.SetMusicIntensity(1f);
+        }
+
+        System.Collections.IEnumerator PulseTimer(Color color, int beats)
+        {
+            for (int b = 0; b < beats; b++)
+            {
+                PixelTween.Punch(this, timerText.transform, 0.35f, 0.2f);
+                _timerFlash = color;
+                yield return new WaitForSeconds(0.15f);
+                _timerFlash = default;
+                yield return new WaitForSeconds(0.15f);
+            }
+        }
+
+        Color _timerFlash;
 
         int FirstWaitingFor(BeerKind kind)
         {
@@ -370,7 +534,8 @@ namespace BarDelPiu.Dev
             {
                 int s = Mathf.CeilToInt(_time);
                 timerText.Set($"{s / 60}:{s % 60:00}");
-                timerText.color = s <= 10 ? BarPalette.Red : BarPalette.Cream;
+                timerText.SetColor(_timerFlash.a > 0f ? _timerFlash
+                    : s <= 10 ? BarPalette.Red : s <= 30 ? BarPalette.Neon : s <= 60 ? BarPalette.AmberLight : BarPalette.Cream);
             }
             if (comboText)
                 comboText.Set(GameSession.Hardcore

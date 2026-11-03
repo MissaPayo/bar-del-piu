@@ -22,5 +22,15 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 66b42c52e00ca4545a7d821b8594f5bd, type: 3}
   - {fileID: 21300000, guid: 0fa5a36d8d326a64f9c3df73a5970f32, type: 3}
   - {fileID: 21300000, guid: 3a93f1131d2326649aa97fd647a40250, type: 3}
+  pipeHardcore:
+  - {fileID: 21300000, guid: 90f66de2ba028494fae748f06904cb45, type: 3}
+  - {fileID: 21300000, guid: ba126eb99677eda4494ce021c557983f, type: 3}
+  - {fileID: 21300000, guid: 5d08b8b1fda9a8e41910459d93b2cc40, type: 3}
+  - {fileID: 21300000, guid: 0132201441e78734e8b9eff07fdf61f3, type: 3}
+  nataHardcore:
+  - {fileID: 21300000, guid: a7a6fe325a19d9c479e2e7254d659866, type: 3}
+  - {fileID: 21300000, guid: f232aff1cedd6e744a8e445cdb6b7447, type: 3}
+  - {fileID: 21300000, guid: fe5f91e2b20f34d4b81f53b5c1088608, type: 3}
+  - {fileID: 21300000, guid: f3581a2ffd856d1439553be4d9964027, type: 3}
   pipeVoicePitch: 0.85
   nataVoicePitch: 1.2

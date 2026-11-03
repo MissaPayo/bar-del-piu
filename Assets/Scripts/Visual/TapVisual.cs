@@ -11,10 +11,13 @@ namespace BarDelPiu.Visual
         public Sprite idle;
         public Sprite selected;
         public Sprite pulled;
+        [Tooltip("Contorno de aviso: un cliente que espera pidió esta cerveza.")]
+        public Sprite hint;
         [Tooltip("Boca del caño: origen del chorro.")]
         public Transform nozzle;
 
         bool _selected, _pouring;
+        int _hint; // 0 = nada, 1 = cliente esperando, 2 = el cliente más urgente (pulsa)
 
         public Vector3 NozzlePosition => nozzle ? nozzle.position : transform.position;
 
@@ -41,10 +44,24 @@ namespace BarDelPiu.Visual
             Refresh();
         }
 
+        /// <summary>Resalta la llave: 1 = la pide un cliente que espera, 2 = la pide el más urgente (parpadea).</summary>
+        public void SetHint(int level)
+        {
+            if (level == _hint) return;
+            _hint = level;
+            Refresh();
+        }
+
+        void Update()
+        {
+            if (_hint == 2 && !_pouring) Refresh(); // el contorno del urgente pulsa
+        }
+
         void Refresh()
         {
             if (handle == null) return;
-            handle.sprite = _pouring ? pulled : _selected ? selected : idle;
+            bool pulseOn = _hint == 1 || (_hint == 2 && Mathf.Repeat(Time.time * 3f, 1f) < 0.6f);
+            handle.sprite = _pouring ? pulled : (pulseOn && hint) ? hint : _selected ? selected : idle;
         }
 
         void OnValidate() => Refresh();
